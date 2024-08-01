@@ -2182,6 +2182,42 @@ drm_do_probe_ddc_edid(void *data, u8 *buf, unsigned int block, size_t len)
 		}
 	} while (ret != xfers && --retries);
 
+	if (ret != xfers) {
+		retries = 5;
+		do {
+			struct i2c_msg msgs[] = {
+				{
+					.addr	= DDC_SEGMENT_ADDR,
+					.flags	= 0,
+					.len	= 1,
+					.buf	= &segment,
+				}, {
+					.addr	= DDC_ADDR_AUX,
+					.flags	= 0,
+					.len	= 1,
+					.buf	= &start,
+				}, {
+					.addr	= DDC_ADDR_AUX,
+					.flags	= I2C_M_RD,
+					.len	= len,
+					.buf	= buf,
+				}
+			};
+
+			/*
+			 * Avoid sending the segment addr to not upset non-compliant
+			 * DDC monitors.
+			 */
+			ret = i2c_transfer(adapter, &msgs[3 - xfers], xfers);
+
+			if (ret == -ENXIO) {
+				DRM_DEBUG_KMS("drm: skipping non-existent adapter %s\n",
+						adapter->name);
+				break;
+			}
+		} while (ret != xfers && --retries);
+	}
+
 	return ret == xfers ? 0 : -1;
 }
 

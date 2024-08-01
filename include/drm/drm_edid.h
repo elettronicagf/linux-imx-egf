@@ -34,6 +34,7 @@ struct i2c_adapter;
 #define EDID_LENGTH 128
 #define DDC_ADDR 0x50
 #define DDC_ADDR2 0x52 /* E-DDC 1.2 - where DisplayID can hide */
+#define DDC_ADDR_AUX 0x56
 
 #define CEA_EXT	    0x02
 #define VTB_EXT	    0x10
