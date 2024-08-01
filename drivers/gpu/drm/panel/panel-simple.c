@@ -4650,6 +4650,51 @@ struct panel_desc_dsi {
 	unsigned int lanes;
 };
 
+static const struct drm_display_mode blc1234_15inch_default_mode = {
+	.clock = 148500,
+	.hdisplay = 1920,
+	.hsync_start = 1920 + 148,
+	.hsync_end = 1920 + 148 + 88,
+	.htotal = 1920 + 148+ 88 + 44,
+	.vdisplay = 1080,
+	.vsync_start = 1080 + 36,
+	.vsync_end = 1080 + 36 + 4,
+	.vtotal = 1080 + 36 + 4 + 5,
+};
+
+
+static const struct panel_desc_dsi blc1234_15inch = {
+	.desc = {
+		.modes = &blc1234_15inch_default_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 154,
+			.height = 86,
+		},
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
+static const struct panel_desc_dsi adapter_0834 = {
+	.desc = {
+		.num_modes = 0,
+		.bpc = 8,
+		.size = {
+			.width = 0,
+			.height = 0,
+		},
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
+
 static const struct drm_display_mode auo_b080uan01_mode = {
 	.clock = 154500,
 	.hdisplay = 1200,
@@ -4874,6 +4919,12 @@ static const struct of_device_id dsi_of_match[] = {
 	}, {
 		.compatible = "osddisplays,osd101t2045-53ts",
 		.data = &osd101t2045_53ts
+	}, {
+		.compatible = "egf,blc1234_15inch",
+		.data = &blc1234_15inch
+	}, {
+		.compatible = "egf,adapter_0834",
+		.data = &adapter_0834
 	}, {
 		/* sentinel */
 	}
