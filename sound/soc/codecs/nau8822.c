@@ -19,6 +19,7 @@
 #include <linux/i2c.h>
 #include <linux/regmap.h>
 #include <linux/slab.h>
+#include <linux/clk.h>
 #include <sound/core.h>
 #include <sound/pcm.h>
 #include <sound/pcm_params.h>
@@ -1132,6 +1133,27 @@ static int nau8822_i2c_probe(struct i2c_client *i2c)
 		return ret;
 	}
 	nau8822->dev = dev;
+
+	nau8822->mclk = devm_clk_get(&i2c->dev, NULL);
+	if (IS_ERR(nau8822->mclk)) {
+		ret = PTR_ERR(nau8822->mclk);
+		/* Defer the probe to see if the clk will be provided later */
+		if (ret == -ENOENT)
+			ret = -EPROBE_DEFER;
+
+		dev_err_probe(&i2c->dev, ret, "Failed to get mclock\n");
+
+		return ret;
+	}
+
+	ret = clk_prepare_enable(nau8822->mclk);
+	if (ret) {
+		dev_err(&i2c->dev, "Error enabling clock %d\n", ret);
+		return ret;
+	}
+
+	/* Need 8 clocks before I2C accesses */
+	udelay(1);
 
 	/* Reset the codec */
 	ret = regmap_write(nau8822->regmap, NAU8822_REG_RESET, 0x00);
