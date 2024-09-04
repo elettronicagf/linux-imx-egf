@@ -290,6 +290,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb imx8mp-evk-rm67191.dtb imx8mp-evk-it626
 			  imx8mp-evk-dual-os08a20.dtb \
 			  imx8mp-egf-3pb1000.dtb \
 			  imx8mp-egf-3pb1001.dtb \
+			  imx8mp-egf-3hi4005.dtb \
 			  imx8mp-evk-iqaudio-dacplus.dtb imx8mp-evk-iqaudio-dacpro.dtb imx8mp-evk-hifiberry-dacplus.dtb \
 			  imx8mp-evk-hifiberry-dac2.dtb imx8mp-evk-hifiberry-dacplusadc.dtb \
 			  imx8mp-evk-rm67199.dtb  imx8mp-evk-rm692c9.dtb \
