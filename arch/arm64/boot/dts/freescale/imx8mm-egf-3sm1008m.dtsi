@@ -107,8 +107,8 @@
 	status = "okay";
 
 	// EEPROM factory data (som)
-	24c64@50 {
-		compatible = "fsl,24c64";
+	24c256@50 {
+		compatible = "fsl,24c256";
 		reg = <0x50>;
 		pagesize = <32>;
 	};
