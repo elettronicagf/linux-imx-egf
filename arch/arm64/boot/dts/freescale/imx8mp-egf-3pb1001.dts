@@ -158,24 +158,13 @@
 };
 
 
- &ecspi1 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-	fsl,spi-num-chipselects = <1>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_ecspi1 &pinctrl_ecspi1_cs>;
-	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-	status = "okay";
-
-    adc@0 {
-		compatible = "ti,adc122s021";
-		reg = <0>;
-		spi-max-frequency = <1000000>;
-		#io-channel-cells = <1>;
-    };
+//  ECSPI1 signals are used for BT Uart
+&ecspi1 {
+	status = "disabled";
 };
 
- &ecspi2 {
+// ECPSI2 on expansion connector
+&ecspi2 {
 	#address-cells = <1>;
 	#size-cells = <0>;
 	fsl,spi-num-chipselects = <1>;
@@ -183,13 +172,6 @@
 	pinctrl-0 = <&pinctrl_ecspi2 &pinctrl_ecspi2_cs>;
 	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
 	status = "okay";
-
-    adc@0 {
-		compatible = "ti,adc122s021";
-		reg = <0>;
-		spi-max-frequency = <1000000>;
-		#io-channel-cells = <1>;
-    };
 };
 
 
@@ -575,21 +557,6 @@
 	pinctrl_ecspi2_cs: ecspi2cs {
 		fsl,pins = <
 			MX8MP_IOMUXC_ECSPI2_SS0__GPIO5_IO13		0x40000
-		>;
-	};
-
-
-	pinctrl_ecspi1: ecspi1grp {
-		fsl,pins = <
-			MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK		0x82
-			MX8MP_IOMUXC_ECSPI1_MOSI__ECSPI1_MOSI		0x82
-			MX8MP_IOMUXC_ECSPI1_MISO__ECSPI1_MISO		0x82
-		>;
-	};
-
-	pinctrl_ecspi1_cs: ecspi1cs {
-		fsl,pins = <
-		MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09		0x40000
 		>;
 	};
 
