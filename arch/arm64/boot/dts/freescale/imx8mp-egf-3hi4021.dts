@@ -7,10 +7,10 @@
 /dts-v1/;
 
 #include "imx8mp-egf-3pb1001.dts"
-
+#include <dt-bindings/pwm/pwm.h>
 
  / {
-	model = "EGF 3HI4005 panel";
+	model = "EGF 3HI4021 panel 21 inch";
 	compatible = "fsl,imx8mp";
  
  	reg_dsi_supply: regulator-3v3-dsi{
@@ -32,7 +32,7 @@
 	
  	dsi0_backlight: backlight {
 		compatible = "pwm-backlight";
-		pwms = <&pwm2 0 100000 0>;
+		pwms = <&pwm2 0 100000 PWM_POLARITY_INVERTED>;
 		enable-gpios = <&gpio_exp_3v3_x16 9 GPIO_ACTIVE_HIGH>;
 		status = "okay";
 		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
