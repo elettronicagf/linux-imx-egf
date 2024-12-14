@@ -13,7 +13,6 @@
 #include <linux/sizes.h>
 #include <linux/slab.h>
 #include <asm/unaligned.h>
-
 #define ILI2XXX_POLL_PERIOD	15
 
 #define ILI210X_DATA_SIZE	64
@@ -21,6 +20,7 @@
 #define ILI251X_DATA_SIZE1	31
 #define ILI251X_DATA_SIZE2	20
 
+#define FIX_2ES1300
 /* Touchscreen commands */
 #define REG_TOUCHDATA		0x10
 #define REG_PANEL_INFO		0x20
@@ -62,6 +62,7 @@ struct ili210x {
 	struct gpio_desc *reset_gpio;
 	struct touchscreen_properties prop;
 	const struct ili2xxx_chip *chip;
+	struct regulator *vddio;
 	u8 version_firmware[8];
 	u8 version_kernel[5];
 	u8 version_proto[2];
@@ -478,7 +479,7 @@ static int ili251x_firmware_update_cached_state(struct device *dev)
 	error = ili251x_firmware_update_resolution(dev);
 	if (error)
 		return error;
-
+#ifndef FIX_2ES1300
 	error = ili251x_firmware_update_firmware_version(dev);
 	if (error)
 		return error;
@@ -494,7 +495,7 @@ static int ili251x_firmware_update_cached_state(struct device *dev)
 	error = ili251x_firmware_update_ic_mode(dev);
 	if (error)
 		return error;
-
+#endif
 	return 0;
 }
 
@@ -771,7 +772,11 @@ static void ili210x_hardware_reset(struct gpio_desc *reset_gpio)
 {
 	/* Reset the controller */
 	gpiod_set_value_cansleep(reset_gpio, 1);
-	usleep_range(12000, 15000);
+	msleep(10);
+	gpiod_set_value_cansleep(reset_gpio, 0);
+	msleep(10);
+	gpiod_set_value_cansleep(reset_gpio, 1);
+	msleep(10);
 	gpiod_set_value_cansleep(reset_gpio, 0);
 	msleep(300);
 }
@@ -950,18 +955,11 @@ static int ili210x_i2c_probe(struct i2c_client *client)
 		return -EINVAL;
 	}
 
+
 	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
 	if (IS_ERR(reset_gpio))
 		return PTR_ERR(reset_gpio);
 
-	if (reset_gpio) {
-		error = devm_add_action_or_reset(dev, ili210x_power_down,
-						 reset_gpio);
-		if (error)
-			return error;
-
-		ili210x_hardware_reset(reset_gpio);
-	}
 
 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
@@ -976,6 +974,27 @@ static int ili210x_i2c_probe(struct i2c_client *client)
 	priv->reset_gpio = reset_gpio;
 	priv->chip = chip;
 	i2c_set_clientdata(client, priv);
+
+	priv->vddio = devm_regulator_get(dev, "VDDIO");
+	if (!IS_ERR(priv->vddio)) {
+		error = regulator_enable(priv->vddio);
+		if (error) {
+			dev_err(&client->dev,
+				"Failed to enable VDDIO regulator: %d\n",
+				error);
+			regulator_disable(priv->vddio);
+			return error;
+		}
+	}
+
+	if (reset_gpio) {
+		error = devm_add_action_or_reset(dev, ili210x_power_down,
+						 reset_gpio);
+		if (error)
+			return error;
+
+		ili210x_hardware_reset(reset_gpio);
+	}
 
 	/* Setup input device */
 	input->name = "ILI210x Touchscreen";
