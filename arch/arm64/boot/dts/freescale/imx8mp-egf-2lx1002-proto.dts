@@ -1,0 +1,66 @@
+/dts-v1/;
+
+#include "imx8mp-egf-2lx100x.dtsi"
+
+/ {
+	model = "2LX1002 panel proto BLC1225";
+	compatible = "fsl,imx8mp";
+
+	reg_dsi_supply: regulator-3v3-dsi{
+		compatible = "regulator-fixed";
+		regulator-name = "DSI-3V3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+	};
+
+	reg_ctp_supply: regulator-3v3-ctp {
+		compatible = "regulator-fixed";
+		regulator-name = "VCC_3V3_CTP";
+		gpio = <&gpio_exp_3v3_x8 3 GPIO_ACTIVE_HIGH>;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		enable-active-high;
+		regulator-always-on;
+	};
+};
+
+&i2c4 {
+	gt9110@14 {
+		compatible = "goodix,gt9110";
+		reg = <0x14>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ts>;
+		VDDIO-supply = <&reg_ctp_supply>;
+		edge-failling-trigger;
+		interrupt-parent = <&gpio1>;
+		interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
+		irq-gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&gpio_exp_3v3_x8 4 GPIO_ACTIVE_HIGH>;
+	};	
+
+	// EEPROM display
+	24c04@56 {
+		compatible = "atmel,24c04";
+		reg = <0x56>;
+		pagesize = <16>;
+	};
+};
+
+&mipi_dsi {
+	status = "okay";
+	panel@0 {
+		compatible = "egf,adapter_0834";
+		reg = <0>;
+		dsi-lanes = <4>;
+		pinctrl-names = "default";
+		ddc-i2c-bus = <&i2c4>;	
+		backlight = <&dsi0_backlight>;	
+		enable-gpio = <&gpio_exp_3v3_x16 8 GPIO_ACTIVE_HIGH>;
+		power-supply =  <&reg_dsi_supply>;
+		status = "okay";
+	};
+};
+
+&lcdif1 {
+	status = "okay";
+};
