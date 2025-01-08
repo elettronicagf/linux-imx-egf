@@ -66,6 +66,43 @@
 		default-brightness-level = <80>;
 	};
 
+	matrix_keypad: matrix-keypad {
+		compatible = "gpio-matrix-keypad";
+		row-gpios = <
+			&io_expander_4 0 GPIO_ACTIVE_HIGH
+			&io_expander_4 1 GPIO_ACTIVE_HIGH
+			&io_expander_4 2 GPIO_ACTIVE_HIGH
+		>;
+		col-gpios = <
+			&io_expander_4 3 GPIO_ACTIVE_HIGH
+			&io_expander_4 4 GPIO_ACTIVE_HIGH
+			&io_expander_4 5 GPIO_ACTIVE_HIGH
+		>;
+		/* keymap
+		    T
+			BTN_0   BTN_3
+			BTN_1   BTN_4
+			BTN_2   BTN_5
+			BTN_7   BTN_6
+					POWER	
+		*/
+		linux,keymap = <
+			MATRIX_KEY(0x00, 0x00, BTN_0)
+			MATRIX_KEY(0x00, 0x01, BTN_1)
+			MATRIX_KEY(0x00, 0x02, BTN_2)
+			MATRIX_KEY(0x01, 0x00, BTN_3)
+			MATRIX_KEY(0x01, 0x01, BTN_4)
+			MATRIX_KEY(0x01, 0x02, BTN_5)
+			MATRIX_KEY(0x02, 0x00, BTN_6)
+			MATRIX_KEY(0x02, 0x01, BTN_7)
+		>;
+		gpio-activelow;
+		wakeup-source;
+		debounce-delay-ms = <50>;
+		col-scan-delay-us = <5000>;
+		linux,no-autorepeat;
+	};
+
 
 
 	 reg_vcc_5v0_usb0: regulator-5v0-usb0 {
@@ -702,6 +739,13 @@
 			MX8MP_IOMUXC_GPIO1_IO10__PWM3_OUT			0x00000106
 		>;
 	};
+	
+	pinctrl_keyboard: keybgrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_GPIO1_IO01__GPIO1_IO01          0x00000116       /* KEYB INT 3V3 */
+		>;
+
+	};
 };
 
 
@@ -754,5 +798,11 @@
 		reg = <0x21>;
 		gpio-controller;
 		#gpio-cells = <2>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_keyboard>;
+		interrupt-parent = <&gpio1>;
+		interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+		interrupt-controller;
+		#interrupt-cells = <2>;
 	};
 };
