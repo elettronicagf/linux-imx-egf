@@ -126,7 +126,7 @@
 	reg_ts_enable: regulator-ts-ena  {
         compatible = "regulator-fixed";
         regulator-name = "regulator-ts-ena";	
-        gpio = <&io_expander_3 3 GPIO_ACTIVE_HIGH>;
+        gpio = <&io_expander_1 3 GPIO_ACTIVE_HIGH>;
         enable-active-high;
         regulator-always-on;
     };
