@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * Copyright 2020 NXP
+ * Copyright 2025 Elettronica GF s.r.l. con Socio Unico
+ *
+ * Configuration with USB1 port in peripheral mode
+ * to allow usb mass storage gadget on that port
+ */
+
+ /dts-v1/;
+
+ #include "imx8mp-egf-3pb1001.dts"
+/ {
+     model = "EGF 3PB1001 10inch Upgrade";
+     compatible = "fsl,imx8mp";  
+	 /delete-node/ regulator-5v0-usb0;
+};
+ 
+&usb3_phy0 {
+    /delete-property/ vbus-supply;
+};
+
+&gpio1 {
+
+	vbus-5v0-usb0-hog {
+		gpio-hog;
+		gpios = <12 GPIO_ACTIVE_HIGH>;
+		output-low;
+	};
+	
+};
+
+// Force peripheral mode
+&usb_dwc3_0 {
+	dr_mode = "peripheral";
+};
