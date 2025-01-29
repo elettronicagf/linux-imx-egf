@@ -6,7 +6,6 @@
  *
  * Author: Andreas Dannenberg <dannenberg@ti.com>
  */
-
 #include <linux/module.h>
 #include <linux/errno.h>
 #include <linux/device.h>
@@ -26,6 +25,7 @@
 
 /* Define how often to check (and clear) the fault status register (in ms) */
 #define TAS5720_FAULT_CHECK_INTERVAL		200
+#define TAS5722_MCLK_PIN_CFG_ENABLED		  1
 
 enum tas572x_type {
 	TAS5720,
@@ -358,6 +358,13 @@ static int tas5720_codec_probe(struct snd_soc_component *component)
 						    TAS5720_Q1_RESERVED7_BIT,
 						    TAS5720_Q1_RESERVED7_BIT);
 		break;
+
+	case TAS5722:
+		ret = snd_soc_component_update_bits(component, TAS5722_DIGITAL_CTRL2_REG,
+					TAS5722_MCLK_PIN_CFG,
+					TAS5722_MCLK_PIN_CFG_ENABLED ?
+					TAS5722_MCLK_PIN_CFG : 0);
+
 	default:
 		break;
 	}
