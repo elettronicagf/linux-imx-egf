@@ -28,7 +28,7 @@
 		 regulator-always-on;
 	 };
 	 
-	  dsi0_backlight: backlight {
+	  dsi0_backlight: backlight_mipi {
 		 compatible = "pwm-backlight";
 		 pwms = <&pwm2 0 100000 0>;
 		 enable-gpios = <&io_expander_2 9 GPIO_ACTIVE_HIGH>;
@@ -47,7 +47,7 @@
 		 default-brightness-level = <80>;
 	 };
  
-	 keyb_backlight: backlight {
+	 keyb_backlight: backlight_keyboard {
 		compatible = "pwm-backlight";
 		pwms = <&pwm3 0 1000000 0>; // T=1000000ns=1ms f=1kHz
 		enable-gpios = <&io_expander_4 7 GPIO_ACTIVE_HIGH>;
