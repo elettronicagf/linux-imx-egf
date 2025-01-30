@@ -330,8 +330,7 @@
 
 &iomuxc {
 	pinctrl-names = "default";
-	
-
+	pinctrl-0 = <&pinctrl_exp_conn_gpios>;
 	
 
 
@@ -387,6 +386,12 @@
 		>;
 	};	
 
+	pinctrl_exp_conn_gpios: expconngpiosgrp {
+		fsl,pins = <
+			MX8MM_IOMUXC_SAI1_MCLK_GPIO4_IO20		0x16
+			MX8MM_IOMUXC_SAI1_RXFS_GPIO4_IO0		0x16
+		>;
+	};
 
 	pinctrl_uart2: uart2grp {
 		fsl,pins = <
