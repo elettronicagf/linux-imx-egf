@@ -303,7 +303,7 @@
 
 
 &fec {
-	status = "okay";
+	status = "disabled";
 };
 
 
