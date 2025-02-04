@@ -1,4 +1,44 @@
 /dts-v1/;
 
  #include "imx93-egf-3sm1010.dtsi"
- 
+ / {
+	model = "EGF iMX93 3PB1001 panel";
+	compatible = "fsl,imx93";
+ };
+
+&lpi2c8 {
+	status = "okay";
+};
+
+&lpi2c4 {
+	status = "okay";
+
+    gpio_exp_1v8: gpio@21 {
+		compatible = "ti,tca6416";
+		reg = <0x21>;
+		gpio-controller;
+		#gpio-cells = <2>;
+	};
+
+    gpio_exp_3v3_x16: gpio@20 {
+		compatible = "nxp,pcal6416";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x20>;
+		status = "okay";
+	};
+
+};
+
+&iomuxc {
+	pinctrl-names = "default";
+
+	pinctrl_ts: tsgrp {
+		fsl,pins = <
+            MX93_PAD_PDM_BIT_STREAM1__GPIO1_IO10          0x00000116       /* TS nINT */
+		>;
+	};
+	
+};
