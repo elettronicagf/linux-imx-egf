@@ -951,12 +951,12 @@
 		>;
 	};
 
-// 	pinctrl_lpi2c2: lpi2c2grp {
-// 		fsl,pins = <
-// 			MX93_PAD_I2C2_SCL__LPI2C2_SCL			0x40000b9e
-// 			MX93_PAD_I2C2_SDA__LPI2C2_SDA			0x40000b9e
-// 		>;
-// 	};
+	pinctrl_lpi2c2: lpi2c2grp {
+		fsl,pins = <
+			MX93_PAD_I2C2_SCL__LPI2C2_SCL			0x40000b9e
+			MX93_PAD_I2C2_SDA__LPI2C2_SDA			0x40000b9e
+		>;
+	};
 
 // 	pinctrl_lpi2c3: lpi2c3grp {
 // 		fsl,pins = <
@@ -976,7 +976,7 @@
 	pinctrl_lpi2c8: lpi2c8grp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO12__LPI2C8_SDA		0x40000b9e
-			MX93_PAD_GPIO_IO13__LPI2C8_SCL		0x40000b9e
+			MX93_PAD_GPIO_IO11__LPI2C8_SCL		0x40000b9e
 		>;
 	};
 
