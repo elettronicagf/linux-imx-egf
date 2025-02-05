@@ -405,23 +405,22 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_fec>;
 	pinctrl-1 = <&pinctrl_fec_sleep>;
-	phy-reset-duration = <60>;
-	phy-reset-post-delay = <70>;
+	phy-mode = "rgmii-id";
+	phy-handle = <&ethphy2>;
 	fsl,magic-packet;
 	status = "okay";
 
 	mdio {
 		#address-cells = <1>;
 		#size-cells = <0>;
+		clock-frequency = <5000000>;
 
 		ethphy2: ethernet-phy@2 {
-			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <2>;
 			eee-broken-1000t;
-			reset-gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
+			reset-gpios = <&io_expander_u19 3 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
 			reset-deassert-us = <80000>;
-			realtek,aldps-enable;
 			realtek,clkout-disable;
 		};
 	};
