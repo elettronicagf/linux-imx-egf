@@ -1,0 +1,297 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2022 NXP
+ */
+
+
+#include <dt-bindings/leds/common.h>
+
+/ {
+
+	aliases {
+		rtc0 = &pcf85063;
+	};
+
+	// REGULATORS
+	reg_5v_sys: regulator-5V-sys {
+		// U1 system voltage 5V AOZ1284P
+		compatible = "regulator-fixed";
+		regulator-name = "SYS_5V";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+	};
+
+	reg_3v3_vdd: regulator-3V3-vdd {
+		// U2 vdd voltage 3V3 RT8070ZSP
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ps_reg>;
+		regulator-name = "VDD_3V3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio4 28 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+	};
+
+	reg_1v8_vdd: regulator-1V8 {
+		// U5 reg voltage 1V8 
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ps_reg>;
+		regulator-name = "REG_1V8";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		gpio = <&gpio4 28 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+	};
+
+	reg_3v3_snvs: regulator-3v3-snvs {
+		// U19 reg SNVS 3V3
+		compatible = "regulator-fixed";
+		regulator-name = "SNVS_3V3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+	};
+
+	reg_usb_otg: regulator-usbotg {
+		// U3
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_reg_usb_otg>;
+		regulator-name = "USB_OTG_PWR";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpio = <&gpio2 13 GPIO_ACTIVE_LOW>;
+		off-on-delay-us = <12000>;
+		enable-active-LOW;
+	};
+
+	reg_usdhc2_vmmc: regulator-usdhc2 {
+		// U1 SWOUT
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
+		regulator-name = "VSD_3V3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		//gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
+		gpio = <&gpio1 12 GPIO_ACTIVE_HIGH>;
+		off-on-delay-us = <12000>;
+		enable-active-high;
+	};
+
+	led-controller {
+		compatible = "gpio-leds";
+
+		led-SYS { // SYSTEM
+			color = <LED_COLOR_ID_GREEN>;
+			default-state = "off";
+			function = LED_FUNCTION_INDICATOR;
+			gpios = <&gpio2 06 GPIO_ACTIVE_LOW>;
+			pinctrl-0 = <&pinctrl_ledSYS>;
+			pinctrl-names = "default";
+		};
+
+		led-USER { // USER
+			color = <LED_COLOR_ID_GREEN>;
+			default-state = "off";
+			function = LED_FUNCTION_INDICATOR;
+			gpios = <&gpio3 22 GPIO_ACTIVE_LOW>;
+			pinctrl-0 = <&pinctrl_ledUSER>;
+			pinctrl-names = "default";
+		};
+	};
+
+};
+
+//=============================================================================
+//=== CAN1
+//=============================================================================
+&flexcan1 {
+	status = "disabled";
+};
+
+//=============================================================================
+//=== CAN2
+//=============================================================================
+&flexcan2 {
+	status = "disabled";
+};
+
+//=============================================================================
+//=== I2C2
+//=============================================================================
+&lpi2c2 {
+	pcf85063: rtc@51 {
+		compatible = "nxp,pcf85063";
+		reg = <0x51>;
+	};
+
+	eeprom_at24mac402: eeprom@58 {
+		compatible = "atmel,24c02"; /* EEPROM is 2Kbits microchip 24aa025e48, an at24c02 with page size of 16 */
+		reg = <0x58>;
+		pagesize = <16>;
+	};
+	
+};
+
+//=============================================================================
+//=== UART1 console
+//=============================================================================
+&lpuart1 { /* console */
+	status = "okay";
+};
+
+//=============================================================================
+//=== UART3 RS232 (can be used as rs485, it depends on mounted chips)
+//=============================================================================
+&lpuart3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart3>;
+	//linux,rs485-enabled-at-boot-time;
+	uart-has-rtscts;
+	status = "okay";
+};
+
+//=============================================================================
+//=== UART7 RS232 (can be used as rs485, it depends on mounted chips)
+//=============================================================================
+&lpuart7 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart7>;
+	//linux,rs485-enabled-at-boot-time;
+	uart-has-rtscts;
+	status = "disabled";
+};
+
+//=============================================================================
+//=== USB2 otg
+//=============================================================================
+&usbotg1 {
+	status = "okay";
+};
+
+//=============================================================================
+//=== USB2 host
+//=============================================================================
+&usbotg2 {
+	status = "okay";
+};
+
+//=============================================================================
+//=== USDHC2 usd
+//=============================================================================
+&usdhc2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;	
+	cd-gpios = <&gpio3 00 GPIO_ACTIVE_LOW>;
+	vmmc-supply = <&reg_usdhc2_vmmc>;
+	bus-width = <4>;
+	no-sdio;
+	no-mmc;
+	status = "okay";
+};
+
+
+
+//=============================================================================
+//#############################################################################
+//=== PINMUX
+//#############################################################################
+//=============================================================================
+&iomuxc {
+
+	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+		fsl,pins = <
+			//MX93_PAD_SD2_RESET_B__GPIO3_IO07							0x31e
+			MX93_PAD_SAI1_TXC__GPIO1_IO12								0x91e
+		>;
+	};
+
+	pinctrl_ps_reg: psreggrp {
+		fsl,pins = <
+			MX93_PAD_CCM_CLKO3__GPIO4_IO28								0x31e
+		>;
+	};
+
+	pinctrl_reg_usb_otg: regusbotggrp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO13__GPIO2_IO13								0x31e
+		>;
+	};
+
+	pinctrl_ledSYS: ledSYSgrp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO06__GPIO2_IO06								0x91e
+		>;
+	};
+
+	pinctrl_ledUSER: ledUSERgrp {
+		fsl,pins = <
+			MX93_PAD_SD3_DATA0__GPIO3_IO22								0x91e
+		>;
+	};
+
+	pinctrl_uart3: uart3grp {
+		fsl,pins = <
+		    MX93_PAD_GPIO_IO14__LPUART3_TX								0x31e
+            MX93_PAD_GPIO_IO15__LPUART3_RX								0x31e
+            MX93_PAD_GPIO_IO16__LPUART3_CTS_B							0x31e
+            MX93_PAD_GPIO_IO17__LPUART3_RTS_B							0x31e
+		>;
+	};
+
+	pinctrl_uart7: uart7grp {
+		fsl,pins = <
+		    MX93_PAD_GPIO_IO08__LPUART7_TX								0x31e
+            MX93_PAD_GPIO_IO09__LPUART7_RX								0x31e
+            MX93_PAD_GPIO_IO10__LPUART7_CTS_B							0x31e
+            MX93_PAD_GPIO_IO11__LPUART7_RTS_B							0x31e
+		>;
+	};
+	
+	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
+		fsl,pins = <
+			MX93_PAD_SD2_CD_B__GPIO3_IO00								0x31e
+		>;
+	};
+	
+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+	pinctrl_usdhc2: usdhc2grp {
+		fsl,pins = <
+			MX93_PAD_SD2_CLK__USDHC2_CLK								0x1582
+			MX93_PAD_SD2_CMD__USDHC2_CMD								0x40001382
+			MX93_PAD_SD2_DATA0__USDHC2_DATA0							0x40001382
+			MX93_PAD_SD2_DATA1__USDHC2_DATA1							0x40001382
+			MX93_PAD_SD2_DATA2__USDHC2_DATA2							0x40001382
+			MX93_PAD_SD2_DATA3__USDHC2_DATA3							0x40001382
+			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT						0x51e
+		>;
+	};
+
+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+		fsl,pins = <
+			MX93_PAD_SD2_CLK__USDHC2_CLK								0x158e
+			MX93_PAD_SD2_CMD__USDHC2_CMD								0x4000138e
+			MX93_PAD_SD2_DATA0__USDHC2_DATA0							0x4000138e
+			MX93_PAD_SD2_DATA1__USDHC2_DATA1							0x4000138e
+			MX93_PAD_SD2_DATA2__USDHC2_DATA2							0x4000138e
+			MX93_PAD_SD2_DATA3__USDHC2_DATA3							0x4000138e
+			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT						0x51e
+		>;
+	};
+
+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+		fsl,pins = <
+			MX93_PAD_SD2_CLK__USDHC2_CLK								0x15fe
+			MX93_PAD_SD2_CMD__USDHC2_CMD								0x400013fe
+			MX93_PAD_SD2_DATA0__USDHC2_DATA0							0x400013fe
+			MX93_PAD_SD2_DATA1__USDHC2_DATA1							0x400013fe
+			MX93_PAD_SD2_DATA2__USDHC2_DATA2							0x400013fe
+			MX93_PAD_SD2_DATA3__USDHC2_DATA3							0x400013fe
+			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT						0x51e
+		>;
+	};
+};
