@@ -4183,6 +4183,31 @@ static const struct panel_desc arm_rtsm = {
 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 };
 
+static const struct panel_desc syt_yx10133863016hbct = {
+	.timings = &syt_yx10133863016hbct_timing,
+	.num_timings = 1,
+	.bpc = 8,
+	.size = {
+		.width = 223,
+		.height = 126,
+	},
+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA,
+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+};
+
+static const struct display_timing syt_yx10133863016hbct_timing = {
+	.pixelclock = { 52800000, 52800000, 52800000 },
+	.hactive = { 1024, 1024, 1024 },
+	.hfront_porch = { 172, 172, 172 },
+	.hback_porch = { 160, 160, 160 },
+	.hsync_len = { 19, 19, 19 },
+	.vactive = { 600, 600, 600 },
+	.vfront_porch = { 10, 10, 10 },
+	.vback_porch = { 23, 23, 23 },
+	.vsync_len = { 7, 7, 7 },
+};
+
 static const struct of_device_id platform_of_match[] = {
 	{
 		.compatible = "ampire,am-1280800n3tzqw-t00h",
@@ -4598,6 +4623,9 @@ static const struct of_device_id platform_of_match[] = {
 	}, {
 		.compatible = "yes-optoelectronics,ytc700tlag-05-201c",
 		.data = &yes_optoelectronics_ytc700tlag_05_201c,
+	}, {
+		.compatible = "syt,yx10133863016hbct",
+		.data = &syt_yx10133863016hbct,
 	}, {
 		/* Must be the last entry */
 		.compatible = "panel-dpi",
