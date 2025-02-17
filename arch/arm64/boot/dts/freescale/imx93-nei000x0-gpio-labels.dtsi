@@ -104,7 +104,7 @@
 /*=== GPIO4												*/
 /*======================================================*/
 &gpio4 {
-	gpio-line-names = 	""				//GPIO4_IO01
+	gpio-line-names = 	"",				//GPIO4_IO01
 						"",				//GPIO4_IO02
 						"",				//GPIO4_IO03
 						"",				//GPIO4_IO04
