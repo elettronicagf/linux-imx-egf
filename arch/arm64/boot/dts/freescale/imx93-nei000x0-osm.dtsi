@@ -286,7 +286,6 @@
 	pinctrl_pca9451: pca9451grp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO29__GPIO2_IO29								0x131e
-			MX93_PAD_SD2_VSELECT__GPIO3_IO19							0x31e
 		>;
 	};
 
