@@ -204,7 +204,7 @@
 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
 		fsl,pins = <
 			//MX93_PAD_SD2_RESET_B__GPIO3_IO07							0x31e
-			MX93_PAD_SAI1_TXC__GPIO1_IO12								0x91e
+			MX93_PAD_SAI1_TXC__GPIO1_IO12								0x31e
 		>;
 	};
 
