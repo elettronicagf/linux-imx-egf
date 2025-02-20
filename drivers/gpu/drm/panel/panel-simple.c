@@ -4193,6 +4193,7 @@ static const struct display_timing syt_yx10133863016hbct_timing = {
 	.vfront_porch = { 10, 10, 10 },
 	.vback_porch = { 23, 23, 23 },
 	.vsync_len = { 7, 7, 7 },
+	.flags = DISPLAY_FLAGS_DE_HIGH,
 };
 
 static const struct panel_desc syt_yx10133863016hbct = {
