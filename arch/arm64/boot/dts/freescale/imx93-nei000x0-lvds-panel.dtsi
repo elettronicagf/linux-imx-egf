@@ -3,6 +3,7 @@
  * Copyright 2022 NXP
  */
 
+#include <dt-bindings/pwm/pwm.h>
 
 / {
 	lvds_backlight: lvds_backlight {
@@ -68,7 +69,7 @@
 /*=====================================================*/
 &lcdif {
 	status = "okay";
-	assigned-clock-rates = <369600000>, <52800000>, <400000000>, <133333333>;
+	assigned-clock-rates = <393216000>, <56173714>, <400000000>, <133333333>;
 };
 
 /*=====================================================*/
@@ -99,6 +100,7 @@
 
 
 
+
 /*=====================================================*/
 /*=== PINMUX                                           */
 /*=====================================================*/
@@ -116,11 +118,11 @@
 			MX93_PAD_SD3_DATA1__GPIO3_IO23								0x31e
 		>;
 	};
-	
-/*	
+
+/*
 	pinctrl_lcd_bkl_en: lcd_bkl_engrp {
 		fsl,pins = <
-			MX8MP_IOMUXC_SD1_DATA0__GPIO2_IO02							0x184
+			MX8MP_IOMUXC_SD1_DATA0__GPIO2_IO02                                                      0x184
 		>;
 	};
 */
