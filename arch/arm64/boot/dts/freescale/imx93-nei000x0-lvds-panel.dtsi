@@ -6,7 +6,7 @@
 #include <dt-bindings/pwm/pwm.h>
 
 / {
-	lvds_backlight: lvds_backlight {
+	backlight_lvds: backlight_lvds {
 		compatible = "pwm-backlight";
 		pwms = <&tpm3 0 100000 0>;
 		pinctrl-names = "default";
@@ -31,7 +31,7 @@
 
 	lvds_panel {
 		compatible = "syt,yx10133863016hbct";
-		backlight = <&lvds_backlight>;
+		backlight = <&backlight_lvds>;
 
 		port {
 			panel_lvds_in: endpoint {
@@ -61,6 +61,20 @@
 };
 
 &ldb_phy {
+	status = "okay";
+};
+
+/*=====================================================*/
+//=== EPXP
+/*=====================================================*/
+&epxp {
+	status = "okay";
+};
+
+/*=====================================================*/
+//=== MEDIA BLK CTRL
+/*=====================================================*/
+&media_blk_ctrl {
 	status = "okay";
 };
 
