@@ -78,23 +78,23 @@
 
 	led-controller {
 		compatible = "gpio-leds";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_leds>;
 
 		led-SYS { // SYSTEM
 			color = <LED_COLOR_ID_GREEN>;
 			default-state = "off";
 			function = LED_FUNCTION_INDICATOR;
 			gpios = <&gpio2 06 GPIO_ACTIVE_LOW>;
-			pinctrl-0 = <&pinctrl_ledSYS>;
-			pinctrl-names = "default";
+			label = "LED-SYS";
 		};
 
 		led-USER { // USER
 			color = <LED_COLOR_ID_GREEN>;
 			default-state = "off";
-			function = LED_FUNCTION_INDICATOR;
+			function = LED_FUNCTION_STATUS;
 			gpios = <&gpio3 22 GPIO_ACTIVE_LOW>;
-			pinctrl-0 = <&pinctrl_ledUSER>;
-			pinctrl-names = "default";
+			label = "LED-USER";
 		};
 	};
 
@@ -180,7 +180,7 @@
 &usdhc2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;	
-	cd-gpios = <&gpio3 00 GPIO_ACTIVE_LOW>;
+	cd-gpios = <&gpio3 0 GPIO_ACTIVE_LOW>;
 	vmmc-supply = <&reg_usdhc2_vmmc>;
 	bus-width = <4>;
 	no-sdio;
@@ -216,14 +216,9 @@
 		>;
 	};
 
-	pinctrl_ledSYS: ledSYSgrp {
+	pinctrl_leds: ledsgrp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO06__GPIO2_IO06								0x91e
-		>;
-	};
-
-	pinctrl_ledUSER: ledUSERgrp {
-		fsl,pins = <
 			MX93_PAD_SD3_DATA0__GPIO3_IO22								0x91e
 		>;
 	};
