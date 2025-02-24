@@ -8,130 +8,130 @@
 /*=== GPIO1												*/
 /*======================================================*/
 &gpio1 {
-	gpio-line-names = 	"",				//GPIO1_IO00
-						"",				//GPIO1_IO01
-						"",				//GPIO1_IO02
-						"",				//GPIO1_IO03
-						"",				//GPIO1_IO04
-						"",				//GPIO1_IO05
-						"",				//GPIO1_IO06
-						"",				//GPIO1_IO07
-						"",				//GPIO1_IO08
-						"",				//GPIO1_IO09
-						"",				//GPIO1_IO10
-						"",				//GPIO1_IO11
-						"",				//GPIO1_IO12
-						"",				//GPIO1_IO13
-						"",				//GPIO1_IO14
-						"";				//GPIO1_IO15
+	gpio-line-names = 	"",					//GPIO1_IO00
+						"",					//GPIO1_IO01
+						"",					//GPIO1_IO02
+						"",					//GPIO1_IO03
+						"",					//GPIO1_IO04
+						"",					//GPIO1_IO05
+						"",					//GPIO1_IO06
+						"",					//GPIO1_IO07
+						"",					//GPIO1_IO08
+						"",					//GPIO1_IO09
+						"",					//GPIO1_IO10
+						"",					//GPIO1_IO11
+						"SNVS_3V3_EN",		//GPIO1_IO12
+						"",					//GPIO1_IO13
+						"",					//GPIO1_IO14
+						"";					//GPIO1_IO15
 };
 
 /*======================================================*/
 /*=== GPIO2												*/
 /*======================================================*/
 &gpio2 {
-	gpio-line-names = 	"",				//GPIO2_IO00
-						"",				//GPIO2_IO01
-						"",				//GPIO2_IO02
-						"",				//GPIO2_IO03
-						"",				//GPIO2_IO04
-						"",				//GPIO2_IO05
-						"",				//GPIO2_IO06
-						"",				//GPIO2_IO07
-						"",				//GPIO2_IO08
-						"",				//GPIO2_IO09
-						"",				//GPIO2_IO10
-						"",				//GPIO2_IO11
-						"",				//GPIO2_IO12
-						"",				//GPIO2_IO13
-						"",				//GPIO2_IO14
-						"",				//GPIO2_IO15
-						"",				//GPIO2_IO16
-						"",				//GPIO2_IO17
-						"",				//GPIO2_IO18
-						"",				//GPIO2_IO19
-						"",				//GPIO2_IO20
-						"",				//GPIO2_IO21
-						"",				//GPIO2_IO22
-						"",				//GPIO2_IO23
-						"",				//GPIO2_IO24
-						"",				//GPIO2_IO25
-						"",				//GPIO2_IO26
-						"",				//GPIO2_IO27
-						"",				//GPIO2_IO28
-						"";				//GPIO2_IO29
+	gpio-line-names = 	"",					//GPIO2_IO00
+						"",					//GPIO2_IO01
+						"",					//GPIO2_IO02
+						"",					//GPIO2_IO03
+						"",					//GPIO2_IO04
+						"",					//GPIO2_IO05
+						"led_SYS",			//GPIO2_IO06
+						"",					//GPIO2_IO07
+						"",					//GPIO2_IO08
+						"",					//GPIO2_IO09
+						"",					//GPIO2_IO10
+						"",					//GPIO2_IO11
+						"",					//GPIO2_IO12
+						"USB0_EN_OC",		//GPIO2_IO13
+						"",					//GPIO2_IO14
+						"",					//GPIO2_IO15
+						"",					//GPIO2_IO16
+						"",					//GPIO2_IO17
+						"",					//GPIO2_IO18
+						"",					//GPIO2_IO19
+						"",					//GPIO2_IO20
+						"RST_USB#",			//GPIO2_IO21
+						"",					//GPIO2_IO22
+						"",					//GPIO2_IO23
+						"",					//GPIO2_IO24
+						"",					//GPIO2_IO25
+						"",					//GPIO2_IO26
+						"",					//GPIO2_IO27
+						"",					//GPIO2_IO28
+						"PMIC_nINT";		//GPIO2_IO29
 };
 
 /*======================================================*/
 /*=== GPIO3												*/
 /*======================================================*/
 &gpio3 {
-	gpio-line-names = 	"",				//GPIO3_IO00
-						"",				//GPIO3_IO01
-						"",				//GPIO3_IO02
-						"",				//GPIO3_IO03
-						"",				//GPIO3_IO04
-						"",				//GPIO3_IO05
-						"",				//GPIO3_IO06
-						"",				//GPIO3_IO07
-						"",				//GPIO3_IO08
-						"",				//GPIO3_IO09
-						"",				//GPIO3_IO10
-						"",				//GPIO3_IO11
-						"",				//GPIO3_IO12
-						"",				//GPIO3_IO13
-						"",				//GPIO3_IO14
-						"",				//GPIO3_IO15
-						"",				//GPIO3_IO16
-						"",				//GPIO3_IO17
-						"",				//GPIO3_IO18
-						"",				//GPIO3_IO19
-						"",				//GPIO3_IO20
-						"",				//GPIO3_IO21
-						"",				//GPIO3_IO22
-						"",				//GPIO3_IO23
-						"",				//GPIO3_IO24
-						"",				//GPIO3_IO25
-						"",				//GPIO3_IO26
-						"",				//GPIO3_IO27
-						"",				//GPIO3_IO28
-						"",				//GPIO3_IO29
-						"",				//GPIO3_IO30
-						"";				//GPIO3_IO31
+	gpio-line-names = 	"SD2_CD",			//GPIO3_IO00
+						"",					//GPIO3_IO01
+						"",					//GPIO3_IO02
+						"",					//GPIO3_IO03
+						"",					//GPIO3_IO04
+						"",					//GPIO3_IO05
+						"",					//GPIO3_IO06
+						"",					//GPIO3_IO07
+						"",					//GPIO3_IO08
+						"",					//GPIO3_IO09
+						"",					//GPIO3_IO10
+						"",					//GPIO3_IO11
+						"",					//GPIO3_IO12
+						"",					//GPIO3_IO13
+						"",					//GPIO3_IO14
+						"",					//GPIO3_IO15
+						"",					//GPIO3_IO16
+						"",					//GPIO3_IO17
+						"",					//GPIO3_IO18
+						"SD2_VSEL",			//GPIO3_IO19
+						"",					//GPIO3_IO20
+						"",					//GPIO3_IO21
+						"led_USER",			//GPIO3_IO22
+						"",					//GPIO3_IO23
+						"",					//GPIO3_IO24
+						"",					//GPIO3_IO25
+						"",					//GPIO3_IO26
+						"",					//GPIO3_IO27
+						"",					//GPIO3_IO28
+						"",					//GPIO3_IO29
+						"",					//GPIO3_IO30
+						"";					//GPIO3_IO31
 };
 
 /*======================================================*/
 /*=== GPIO4												*/
 /*======================================================*/
 &gpio4 {
-	gpio-line-names = 	"",				//GPIO4_IO01
-						"",				//GPIO4_IO02
-						"",				//GPIO4_IO03
-						"",				//GPIO4_IO04
-						"",				//GPIO4_IO05
-						"",				//GPIO4_IO06
-						"",				//GPIO4_IO07
-						"",				//GPIO4_IO08
-						"",				//GPIO4_IO09
-						"",				//GPIO4_IO10
-						"",				//GPIO4_IO11
-						"",				//GPIO4_IO12
-						"",				//GPIO4_IO13
-						"",				//GPIO4_IO14
-						"",				//GPIO4_IO15
-						"",				//GPIO4_IO16
-						"",				//GPIO4_IO17
-						"",				//GPIO4_IO18
-						"",				//GPIO4_IO19
-						"",				//GPIO4_IO20
-						"",				//GPIO4_IO21
-						"",				//GPIO4_IO22
-						"",				//GPIO4_IO23
-						"",				//GPIO4_IO24
-						"",				//GPIO4_IO25
-						"",				//GPIO4_IO26
-						"",				//GPIO4_IO27
-						"",				//GPIO4_IO28
-						"";				//GPIO4_IO29
+	gpio-line-names = 	"",					//GPIO4_IO01
+						"",					//GPIO4_IO02
+						"",					//GPIO4_IO03
+						"",					//GPIO4_IO04
+						"",					//GPIO4_IO05
+						"",					//GPIO4_IO06
+						"",					//GPIO4_IO07
+						"",					//GPIO4_IO08
+						"",					//GPIO4_IO09
+						"",					//GPIO4_IO10
+						"",					//GPIO4_IO11
+						"",					//GPIO4_IO12
+						"",					//GPIO4_IO13
+						"",					//GPIO4_IO14
+						"",					//GPIO4_IO15
+						"",					//GPIO4_IO16
+						"",					//GPIO4_IO17
+						"",					//GPIO4_IO18
+						"",					//GPIO4_IO19
+						"",					//GPIO4_IO20
+						"",					//GPIO4_IO21
+						"",					//GPIO4_IO22
+						"",					//GPIO4_IO23
+						"",					//GPIO4_IO24
+						"",					//GPIO4_IO25
+						"",					//GPIO4_IO26
+						"",					//GPIO4_IO27
+						"CARRIER_PWR_ON",	//GPIO4_IO28
+						"";					//GPIO4_IO29
 };
 
