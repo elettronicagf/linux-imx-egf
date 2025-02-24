@@ -8,7 +8,7 @@
 / {
 	backlight_lvds: backlight_lvds {
 		compatible = "pwm-backlight";
-		pwms = <&tpm3 0 100000 0>;
+		pwms = <&tpm3 3 100000 0>;
 		pinctrl-names = "default";
 		//pinctrl-0 = <&pinctrl_lcd_bkl_en>;
 		//enable-gpios = <&adp5585gpio 8 GPIO_ACTIVE_HIGH>;
