@@ -198,12 +198,12 @@ static u8 gup_get_ic_fw_msg(struct i2c_client *client)
 	 */
 	for (i = 0; i < 4; i++)
 		update_msg.ic_fw_msg.hw_info[i] = buf[GTP_ADDR_LENGTH + 3 - i];
-		dev_dbg(&client->dev,
-			"IC Hardware info:%02x%02x%02x%02x",
-			update_msg.ic_fw_msg.hw_info[0],
-			update_msg.ic_fw_msg.hw_info[1],
-			update_msg.ic_fw_msg.hw_info[2],
-			update_msg.ic_fw_msg.hw_info[3]);
+	dev_dbg(&client->dev,
+		"IC Hardware info:%02x%02x%02x%02x",
+		update_msg.ic_fw_msg.hw_info[0],
+		update_msg.ic_fw_msg.hw_info[1],
+		update_msg.ic_fw_msg.hw_info[2],
+		update_msg.ic_fw_msg.hw_info[3]);
 	/*  step2:get firmware message */
 	for (retry = 0; retry < 2; retry++) {
 		ret = gup_get_ic_msg(client, GUP_REG_FW_MSG, buf, 1);
@@ -327,10 +327,7 @@ void gup_leave_update_mode(struct i2c_client *client)
 {
 	struct goodix_ts_data *ts = i2c_get_clientdata(client);
 
-	if (ts->pdata->int_sync && ts->pinctrl.pinctrl)
-		pinctrl_select_state(ts->pinctrl.pinctrl,
-				     ts->pinctrl.int_input);
-	else if (ts->pdata->int_sync && gpio_is_valid(ts->pdata->irq_gpio))
+	if (ts->pdata->int_sync && gpio_is_valid(ts->pdata->irq_gpio))
 		gpio_direction_input(ts->pdata->irq_gpio);
 	dev_dbg(&client->dev, "[leave_update_mode]reset chip.");
 	gtp_reset_guitar(i2c_connect_client, 20);

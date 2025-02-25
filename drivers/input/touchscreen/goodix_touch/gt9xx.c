@@ -649,19 +649,13 @@ void gtp_int_output(struct goodix_ts_data *ts, int level)
 		return;
 
 	if (level == 0) {
-		if (ts->pinctrl.pinctrl)
-			pinctrl_select_state(ts->pinctrl.pinctrl,
-					     ts->pinctrl.int_out_low);
-		else if (gpio_is_valid(ts->pdata->irq_gpio))
+		if (gpio_is_valid(ts->pdata->irq_gpio))
 			gpio_direction_output(ts->pdata->irq_gpio, 0);
 		else
 			dev_err(&ts->client->dev,
 				"Failed set int pin output low\n");
 	} else {
-		if (ts->pinctrl.pinctrl)
-			pinctrl_select_state(ts->pinctrl.pinctrl,
-					     ts->pinctrl.int_out_high);
-		else if (gpio_is_valid(ts->pdata->irq_gpio))
+		if (gpio_is_valid(ts->pdata->irq_gpio))
 			gpio_direction_output(ts->pdata->irq_gpio, 1);
 		else
 			dev_err(&ts->client->dev,
@@ -674,12 +668,7 @@ void gtp_int_sync(struct goodix_ts_data *ts, s32 ms)
 	if (!ts->pdata->int_sync)
 		return;
 
-	if (ts->pinctrl.pinctrl) {
-		gtp_int_output(ts, 0);
-		msleep(ms);
-		pinctrl_select_state(ts->pinctrl.pinctrl,
-				     ts->pinctrl.int_input);
-	} else if (gpio_is_valid(ts->pdata->irq_gpio)) {
+	if (gpio_is_valid(ts->pdata->irq_gpio)) {
 		gpio_direction_output(ts->pdata->irq_gpio, 0);
 		msleep(ms);
 		gpio_direction_input(ts->pdata->irq_gpio);
@@ -1374,58 +1363,7 @@ static int gtp_i2c_test(struct i2c_client *client)
 	return -EAGAIN;
 }
 
-static int gtp_pinctrl_init(struct goodix_ts_data *ts)
-{
-	struct goodix_pinctrl *pinctrl = &ts->pinctrl;
 
-	pinctrl->pinctrl = devm_pinctrl_get(&ts->client->dev);
-	if (IS_ERR_OR_NULL(pinctrl->pinctrl)) {
-		dev_info(&ts->client->dev, "No pinctrl found\n");
-		pinctrl->pinctrl = NULL;
-		return 0;
-	}
-
-	pinctrl->default_sta = pinctrl_lookup_state(pinctrl->pinctrl,
-						    "default");
-	if (IS_ERR_OR_NULL(pinctrl->default_sta)) {
-		dev_info(&ts->client->dev,
-			 "Failed get pinctrl state:default state\n");
-		goto exit_pinctrl_init;
-	}
-
-	pinctrl->int_out_high = pinctrl_lookup_state(pinctrl->pinctrl,
-						     "int-output-high");
-	if (IS_ERR_OR_NULL(pinctrl->int_out_high)) {
-		dev_info(&ts->client->dev,
-			 "Failed get pinctrl state:output_high\n");
-		goto exit_pinctrl_init;
-	}
-
-	pinctrl->int_out_low = pinctrl_lookup_state(pinctrl->pinctrl,
-						    "int-output-low");
-	if (IS_ERR_OR_NULL(pinctrl->int_out_low)) {
-		dev_info(&ts->client->dev,
-			 "Failed get pinctrl state:output_low\n");
-		goto exit_pinctrl_init;
-	}
-
-	pinctrl->int_input = pinctrl_lookup_state(pinctrl->pinctrl,
-						  "int-input");
-	if (IS_ERR_OR_NULL(pinctrl->int_input)) {
-		dev_info(&ts->client->dev,
-			 "Failed get pinctrl state:int-input\n");
-		goto exit_pinctrl_init;
-	}
-	dev_info(&ts->client->dev, "Success init pinctrl\n");
-	return 0;
-exit_pinctrl_init:
-	devm_pinctrl_put(pinctrl->pinctrl);
-	pinctrl->pinctrl = NULL;
-	pinctrl->int_out_high = NULL;
-	pinctrl->int_out_low = NULL;
-	pinctrl->int_input = NULL;
-	return -EINVAL;
-}
 
 static void gtp_pinctrl_deinit(struct goodix_ts_data *ts)
 {
@@ -1890,7 +1828,7 @@ static void gtp_shutdown(struct i2c_client *client)
 	return;
 }
 
-static int gtp_probe(struct i2c_client *client, const struct i2c_device_id *id)
+static int gtp_probe(struct i2c_client *client)
 {
 	int ret = -1;
 	struct goodix_ts_data *ts;
@@ -1961,16 +1899,6 @@ static int gtp_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	if (ret) {
 		dev_err(&client->dev, "Failed power on device\n");
 		ret = -EINVAL;
-		goto exit_deinit_power;
-	}
-
-	ret = gtp_pinctrl_init(ts);
-	if (ret < 0) {
-		/* if define pinctrl must define the following state
-		 * to let int-pin work normally: default, int_output_high,
-		 * int_output_low, int_input
-		 */
-		dev_err(&client->dev, "Failed get wanted pinctrl state\n");
 		goto exit_deinit_power;
 	}
 
@@ -2069,7 +1997,7 @@ exit_free_client_data:
 	return ret;
 }
 
-static int gtp_drv_remove(struct i2c_client *client)
+static void gtp_drv_remove(struct i2c_client *client)
 {
 	struct goodix_ts_data *ts = i2c_get_clientdata(client);
 
@@ -2108,7 +2036,7 @@ static int gtp_drv_remove(struct i2c_client *client)
 	devm_kfree(&client->dev, ts->pdata);
 	devm_kfree(&client->dev, ts);
 
-	return 0;
+	return;
 }
 
 static void gtp_suspend(struct goodix_ts_data *ts)
