@@ -5,4 +5,98 @@
 / {
 	model = "2LX1002 panel";
 	compatible = "fsl,imx8mp";
+
+
+	panel_lvds0: panel-lvds0  {
+		compatible = "panel-lvds";
+		backlight = <&disp_backlight>;
+		width-mm = <222>;
+		height-mm = <125>;
+		enable-gpios = <&gpio_exp_3v3_x16 7 0>;
+		data-mapping = "vesa-24";
+
+		panel-timing {
+			clock-frequency = <49500000>;
+			hactive = <1024>;
+			vactive = <600>;
+			hback-porch = <160>;
+			hfront-porch = <160>;
+			vback-porch = <23>;
+			vfront-porch = <12>;
+			hsync-len = <10>;
+			vsync-len = <10>;
+			de-active = <1>;
+			vsync-active = <0>;
+			hsync-active = <0>;
+			pixelclk-active = <1>;
+		};
+
+		port {
+			panel0_in: endpoint {
+				remote-endpoint = <&lvds0_out>;
+			};
+		};
+
+
+	};
+
+	reg_ts_enable: regulator-ts-ena  {
+        compatible = "regulator-fixed";
+        regulator-name = "regulator-ts-ena";	
+        gpio = <&gpio_exp_3v3_x8 3 GPIO_ACTIVE_HIGH>;
+        enable-active-high;
+        regulator-always-on;
+    };
+
+};
+
+&clk {
+	assigned-clock-rates = <0>, <0>,
+							<1000000000>,
+							<800000000>,
+							<500000000>,
+							<400000000>,
+							<800000000>,
+							<393216000>,
+							<361267200>,
+							<1039500000>,
+							<363825000>;
+};
+
+/* LVDS */
+&lcdif2 {
+	status = "okay";
+};
+
+&ldb {
+	status = "okay";
+
+	lvds-channel@0 {
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <24>;
+		status = "okay";
+		
+		port@1 {
+			reg = <1>;
+			lvds0_out: endpoint {
+				remote-endpoint = <&panel0_in>;
+			};
+		};
+	};
+};
+
+&ldb_phy {
+	status = "okay";
+};
+
+&i2c4 {
+	touchscreen@41 {
+		compatible = "ilitek,ili2132";
+		reg = <0x41>;
+		interrupt-parent = <&gpio1>;
+		interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
+		reset-gpios = <&gpio_exp_3v3_x8 4 GPIO_ACTIVE_LOW>;
+		wakeup-source;
+		VDDIO-supply = <&reg_ts_enable>;
+	};
 };

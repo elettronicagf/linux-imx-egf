@@ -115,7 +115,7 @@
 		regulator-always-on;
 	};
 	
- 	dsi0_backlight: backlight {
+ 	disp_backlight: backlight {
 		compatible = "pwm-backlight";
 		pwms = <&pwm2 0 100000 0>;
 		enable-gpios = <&gpio_exp_3v3_x16 9 GPIO_ACTIVE_HIGH>;
