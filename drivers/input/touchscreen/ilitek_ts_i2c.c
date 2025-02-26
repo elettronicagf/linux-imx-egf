@@ -53,6 +53,7 @@ struct ilitek_ts_data {
 
 	const struct ilitek_protocol_map *ptl_cb_func;
 	struct ilitek_protocol_info	ptl;
+	struct regulator *vddio;
 
 	char				product_id[30];
 	u16				mcu_ver;
@@ -391,9 +392,9 @@ static const struct ilitek_protocol_map ptl_func_map[] = {
 static void ilitek_reset(struct ilitek_ts_data *ts, int delay)
 {
 	if (ts->reset_gpio) {
-		gpiod_set_value(ts->reset_gpio, 1);
+		gpiod_direction_output(ts->reset_gpio, 1);
 		mdelay(10);
-		gpiod_set_value(ts->reset_gpio, 0);
+		gpiod_direction_output(ts->reset_gpio, 0);
 		mdelay(delay);
 	}
 }
@@ -559,6 +560,20 @@ static int ilitek_ts_i2c_probe(struct i2c_client *client)
 
 	ts->client = client;
 	i2c_set_clientdata(client, ts);
+
+	ts->vddio = devm_regulator_get(dev, "VDDIO");
+	if (IS_ERR(ts->vddio)) {
+		dev_err(dev, "Failed to get VDDIO regulator: %d", error);
+		return error;
+	}
+
+	error = regulator_enable(ts->vddio);
+	if (error) {
+		dev_err(&client->dev,
+			"Failed to enable VDDIO regulator: %d\n",
+			error);
+		return error;
+	}
 
 	ts->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
 	if (IS_ERR(ts->reset_gpio)) {
