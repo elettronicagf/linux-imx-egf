@@ -97,6 +97,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-icore-mx8mm-edimm2.2.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-nitrogen-r2.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-egf-3pb1002.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-egf-3hi3011.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-egf-3hi3021.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-egf-3hi3005.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx8mn-bsh-smm-s2.dtb
