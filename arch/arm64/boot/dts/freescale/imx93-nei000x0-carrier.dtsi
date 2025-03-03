@@ -10,6 +10,7 @@
 
 	aliases {
 		rtc0 = &pcf85063;
+		rtc1 = &bbnsm_rtc;
 	};
 
 	// REGULATORS
