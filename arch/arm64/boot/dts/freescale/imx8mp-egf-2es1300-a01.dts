@@ -813,7 +813,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ts>;
         interrupt-parent = <&gpio1>;
-        interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
+        interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
         reset-gpios = <&io_expander_1 4 GPIO_ACTIVE_LOW>; // Index 0-based
         VDDIO-supply = <&reg_ts_enable>;
     };
