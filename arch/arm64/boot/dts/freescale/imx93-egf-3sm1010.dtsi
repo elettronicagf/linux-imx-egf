@@ -844,9 +844,9 @@
 // 	};
 // };
 
-// &wdog3 {
-// 	status = "okay";
-// };
+&wdog3 {
+	status = "okay";
+};
 
 &iomuxc {
 	pinctrl_eqos: eqosgrp {
