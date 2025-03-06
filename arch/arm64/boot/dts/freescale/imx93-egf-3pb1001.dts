@@ -1,10 +1,11 @@
 /dts-v1/;
 
- #include "imx93-egf-3sm1010.dtsi"
- / {
+#include "imx93-egf-3sm1010.dtsi"
+
+/ {
 	model = "EGF iMX93 3PB1001 panel";
 	compatible = "fsl,imx93";
- };
+};
 
 &lpi2c8 {
 	status = "okay";
@@ -75,4 +76,53 @@
 
 };
 
+&flexcan1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_flexcan1>;
+	status = "okay";
+};
 
+&lpuart1 { 
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart1>;
+	//assigned-clocks = <&clk IMX93_CLK_LPUART1>;
+	//assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>;
+	//uart-has-rtscts;
+	status = "okay";
+};
+
+&lpuart5 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart5>;
+	assigned-clocks = <&clk IMX93_CLK_LPUART5>;
+	assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>;
+	pinctrl-assert-gpios = <&io_expander_u21 9 GPIO_ACTIVE_LOW>;
+	status = "okay";
+};
+
+&iomuxc {
+    pinctrl-names = "default";
+
+    pinctrl_flexcan1: flexcan1grp {
+		fsl,pins = <
+            MX93_PAD_PDM_CLK__CAN1_TX               0x139e
+            MX93_PAD_PDM_BIT_STREAM0__CAN1_RX       0x139e
+		>;
+	};
+
+    pinctrl_uart1: uart1grp {
+		fsl,pins = <
+			MX93_PAD_UART1_RXD__LPUART1_RX	        0x31e
+			MX93_PAD_UART1_TXD__LPUART1_TX	        0x31e
+            MX93_PAD_UART2_RXD__LPUART1_CTS_B       0x31e
+            MX93_PAD_UART2_TXD__LPUART1_RTS_B       0x31e
+		>;
+	};
+
+    pinctrl_uart5: uart5grp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO01__LPUART5_RX	        0x31e
+			MX93_PAD_GPIO_IO00__LPUART5_TX	        0x31e
+		>;
+	};
+};
