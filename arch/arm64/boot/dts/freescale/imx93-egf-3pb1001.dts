@@ -27,6 +27,7 @@
     24c32@54 {
         compatible = "atmel,24c32";
         pinctrl-names = "default";
+		pinctrl-assert-gpios = <&io_expander_u21 5 GPIO_ACTIVE_LOW>;
         reg = <0x54>;
         pagesize = <32>;
     };
@@ -58,10 +59,13 @@
 	status = "okay";
 
     gpio_exp_1v8: gpio@21 {
-		compatible = "ti,tca6416";
-		reg = <0x21>;
+		compatible = "nxp,pcal6416";
+		#address-cells = <1>;
+		#size-cells = <0>;
 		gpio-controller;
 		#gpio-cells = <2>;
+		reg = <0x21>;
+		status = "okay";
 	};
 
     gpio_exp_3v3_x16: gpio@20 {
@@ -85,19 +89,20 @@
 &lpuart1 { 
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart1>;
-	//assigned-clocks = <&clk IMX93_CLK_LPUART1>;
-	//assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>;
-	//uart-has-rtscts;
 	status = "okay";
 };
 
 &lpuart5 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart5>;
-	assigned-clocks = <&clk IMX93_CLK_LPUART5>;
-	assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>;
 	pinctrl-assert-gpios = <&io_expander_u21 9 GPIO_ACTIVE_LOW>;
 	status = "okay";
+};
+
+&tpm6 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_tpm6>;
 };
 
 &iomuxc {
@@ -114,8 +119,8 @@
 		fsl,pins = <
 			MX93_PAD_UART1_RXD__LPUART1_RX	        0x31e
 			MX93_PAD_UART1_TXD__LPUART1_TX	        0x31e
-            MX93_PAD_UART2_RXD__LPUART1_CTS_B       0x31e
-            MX93_PAD_UART2_TXD__LPUART1_RTS_B       0x31e
+			MX93_PAD_UART2_RXD__LPUART1_CTS_B		0x31e
+			MX93_PAD_UART2_TXD__LPUART1_RTS_B		0x31e
 		>;
 	};
 
@@ -123,6 +128,12 @@
 		fsl,pins = <
 			MX93_PAD_GPIO_IO01__LPUART5_RX	        0x31e
 			MX93_PAD_GPIO_IO00__LPUART5_TX	        0x31e
+		>;
+	};
+
+	pinctrl_tpm6: tpm6grp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO23__SPDIF_OUT            0x31e
 		>;
 	};
 };
