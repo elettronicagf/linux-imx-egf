@@ -175,6 +175,10 @@ static int ilitek_process_and_report_v6(struct ilitek_ts_data *ts)
 			report_max_point, ts->max_tp);
 		return -EINVAL;
 	}
+	if(report_max_point == 0){
+		dev_dbg(dev,"Ignore report max point:%d \n", report_max_point);
+		return 0;
+	}
 
 	count = DIV_ROUND_UP(report_max_point, packet_max_point);
 	for (i = 1; i < count; i++) {

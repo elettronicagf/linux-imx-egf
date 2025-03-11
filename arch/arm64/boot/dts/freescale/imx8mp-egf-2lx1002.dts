@@ -94,7 +94,7 @@
 		compatible = "ilitek,ili2132";
 		reg = <0x41>;
 		interrupt-parent = <&gpio1>;
-		interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
+		interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
 		reset-gpios = <&gpio_exp_3v3_x8 4 GPIO_ACTIVE_LOW>;
 		wakeup-source;
 		VDDIO-supply = <&reg_ts_enable>;
