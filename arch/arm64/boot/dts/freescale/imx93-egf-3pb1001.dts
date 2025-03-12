@@ -27,7 +27,6 @@
     24c32@54 {
         compatible = "atmel,24c32";
         pinctrl-names = "default";
-		pinctrl-assert-gpios = <&io_expander_u21 5 GPIO_ACTIVE_LOW>;
         reg = <0x54>;
         pagesize = <32>;
     };
@@ -48,7 +47,7 @@
     //     clock-names = "mclk";
     // };
     
-    // temp sensor
+    // Temp Sensor Carrier
     tmp102@48 {
         reg = <0x48>;
         compatible = "ti,tmp102";
@@ -133,7 +132,7 @@
 
 	pinctrl_tpm6: tpm6grp {
 		fsl,pins = <
-			MX93_PAD_GPIO_IO23__SPDIF_OUT            0x31e
+			MX93_PAD_GPIO_IO23__TPM6_CH1            0x31e
 		>;
 	};
 };

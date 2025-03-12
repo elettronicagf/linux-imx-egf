@@ -441,6 +441,19 @@
 	pinctrl-1 = <&pinctrl_lpi2c1>;
 	status = "okay";
 
+	// EEPROM SoM
+	24c64@50 {
+		compatible = "at,24c64";
+		pinctrl-names = "default";
+		reg = <0x50>;
+	};
+
+	// Temp Sensor SoM
+	tmp102@49 {
+		compatible = "ti,tmp102";
+		reg = <0x49>;
+	};
+
 	io_expander_u19: gpio@21 {
 		compatible = "ti,tca6408";
 		reg = <0x21>;
