@@ -202,6 +202,14 @@
 
 &iomuxc {
     pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_egf>;
+
+	pinctrl_egf: egfgrp {
+		// gpio reset# LTE module
+		fsl,pins = <
+			MX93_PAD_GPIO_IO27__GPIO2_IO27	0x31e
+		>;
+	};
 
     pinctrl_flexcan1: flexcan1grp {
 		fsl,pins = <
