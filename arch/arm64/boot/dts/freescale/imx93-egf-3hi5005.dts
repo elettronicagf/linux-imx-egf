@@ -108,19 +108,42 @@
 };
 
 &lpi2c8 {
-	gt9110@14 {
-		compatible = "goodix,gt9110";
-        reg = <0x14>;
-		pinctrl-names = "default";
+	    gt9110@14 {
+        
+        compatible = "goodix,gt9xx";
+        pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ts>;
-		VDDIO-supply = <&reg_ctp_supply>;
-		edge-failling-trigger;
+        
+        reg = <0x14>;
+        status = "okay";
         interrupt-parent = <&gpio1>;
         interrupts = <10 IRQ_TYPE_EDGE_FALLING>;
         irq-gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>;
         reset-gpios = <&gpio_exp_3v3_x8 4 GPIO_ACTIVE_HIGH>;
-        status = "okay";
-      };	
+        edge-failling-trigger;
+        touchscreen-size-x = <1024>;
+        touchscreen-size-y = <600>;
+
+
+        touchscreen-max-id = <11>;
+        touchscreen-max-w = <512>;
+        touchscreen-max-p = <512>;
+        
+        goodix,slide-wakeup = <0>;
+        goodix,type-a-report = <0>;
+        goodix,driver-send-cfg = <0>;
+        goodix,resume-in-workqueue = <0>;
+        goodix,int-sync = <1>;
+        goodix,swap-x2y = <0>;
+        goodix,esd-protect = <1>;
+        goodix,auto-update-cfg = <1>;
+        goodix,auto-update = <1>;
+        goodix,power-off-sleep = <0>;
+        goodix,pen-suppress-finger = <0>;
+        goodix,cfg-group0 = [];
+
+        VDDIO-supply = <&reg_ctp_supply>;
+    };
 };
 
 
