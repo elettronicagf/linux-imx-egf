@@ -103,6 +103,14 @@
 		linux,no-autorepeat;
 	};
 
+	clk_xrm1280: fixed-clock {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <18432000>;  // 18.432 MHz
+		clock-output-names = "xrm1280_clk";
+	};
+
+
 
 
 	 reg_vcc_5v0_usb0: regulator-5v0-usb0 {
@@ -278,10 +286,32 @@
 	status = "okay";
 };
 
-
-//  ECSPI1 signals are used for BT Uart
+//  ECSPI1 signals
 &ecspi1 {
-	status = "disabled";
+	#address-cells = <1>;
+	#size-cells = <0>;
+	fsl,spi-num-chipselects = <1>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_ecspi1 &pinctrl_ecspi1_cs>;
+	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
+	status = "okay";
+
+
+	xrm1280: xrm1280@0 {
+		compatible = "exar,xrm1280";
+		reg = <0>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_xrm1280>;
+
+		clocks = <&clk_xrm1280>;
+		interrupt-parent = <&gpio4>;
+		interrupts = <20 IRQ_TYPE_EDGE_FALLING>;
+		gpio-controller;
+		#gpio-cells = <2>;
+	};
+
+
+
 };
 
 // ECPSI2 on expansion connector
@@ -387,6 +417,12 @@
 		#gpio-cells = <2>;
 		reg = <0x20>;
 		status = "okay";
+		xr20m1280_nreset {
+			gpio-hog;
+			gpios = <0 GPIO_ACTIVE_HIGH>;
+			output-high;
+			line-name = "xr20m1280_nreset";
+		};
 	};
 
 	codec_speaker: tas5720@6c{
@@ -671,6 +707,26 @@
 			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX	0x00000146
 			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX	0x00000146
 			MX8MP_IOMUXC_SPDIF_EXT_CLK__GPIO5_IO05	0x46
+		>;
+	};
+
+
+	pinctrl_ecspi1: ecspi1grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK		0x82
+			MX8MP_IOMUXC_ECSPI1_MOSI__ECSPI1_MOSI		0x82
+			MX8MP_IOMUXC_ECSPI1_MISO__ECSPI1_MISO		0x82
+		>;
+	};
+
+	pinctrl_ecspi1_cs: ecspi1csgrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09		0x40000
+		>;
+	};
+	pinctrl_xrm1280: xrm1280grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SAI1_MCLK__GPIO4_IO20		0x00000116       /* nInt spi to uart */
 		>;
 	};
 
