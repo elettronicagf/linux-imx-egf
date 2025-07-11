@@ -42,14 +42,6 @@
 		regulator-max-microvolt = <1800000>;
 	};
 
-	reg_3v3_snvs: regulator-3v3-snvs {
-		// U19 reg SNVS 3V3
-		compatible = "regulator-fixed";
-		regulator-name = "SNVS_3V3";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-	};
-
 	reg_usb_otg: regulator-usbotg {
 		// U3
 		compatible = "regulator-fixed";
@@ -64,14 +56,13 @@
 	};
 
 	reg_usdhc2_vmmc: regulator-usdhc2 {
-		// U1 SWOUT
+		// U19
 		compatible = "regulator-fixed";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
-		regulator-name = "VSD_3V3";
+		regulator-name = "3V3_SNVS";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-		//gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
 		gpio = <&gpio1 12 GPIO_ACTIVE_HIGH>;
 		off-on-delay-us = <12000>;
 		enable-active-high;
@@ -119,6 +110,7 @@
 //=== I2C2
 //=============================================================================
 &lpi2c2 {
+
 	pcf85063: rtc@51 {
 		compatible = "nxp,pcf85063";
 		reg = <0x51>;
@@ -179,9 +171,12 @@
 //=== USDHC2 usd
 //=============================================================================
 &usdhc2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;	
-	cd-gpios = <&gpio3 0 GPIO_ACTIVE_LOW>;
+	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+	pinctrl-3 = <&pinctrl_usdhc2_sleep>, <&pinctrl_usdhc2_gpio_sleep>;
+	cd-gpios = <&gpio3 00 GPIO_ACTIVE_LOW>;
 	vmmc-supply = <&reg_usdhc2_vmmc>;
 	bus-width = <4>;
 	no-sdio;
@@ -200,8 +195,7 @@
 
 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
 		fsl,pins = <
-			//MX93_PAD_SD2_RESET_B__GPIO3_IO07							0x31e
-			MX93_PAD_SAI1_TXC__GPIO1_IO12								0x31e
+			MX93_PAD_SAI1_TXC__GPIO1_IO12								0x91e
 		>;
 	};
 
@@ -247,16 +241,22 @@
 			MX93_PAD_SD2_CD_B__GPIO3_IO00								0x31e
 		>;
 	};
+
+	pinctrl_usdhc2_gpio_sleep: usdhc2gpiogrpsleep {
+		fsl,pins = <
+			MX93_PAD_SD2_CD_B__GPIO3_IO00								0x51e
+		>;
+	};
 	
 	/* need to config the SION for data and cmd pad, refer to ERR052021 */
 	pinctrl_usdhc2: usdhc2grp {
 		fsl,pins = <
-			MX93_PAD_SD2_CLK__USDHC2_CLK								0x1582
-			MX93_PAD_SD2_CMD__USDHC2_CMD								0x40001382
-			MX93_PAD_SD2_DATA0__USDHC2_DATA0							0x40001382
-			MX93_PAD_SD2_DATA1__USDHC2_DATA1							0x40001382
-			MX93_PAD_SD2_DATA2__USDHC2_DATA2							0x40001382
-			MX93_PAD_SD2_DATA3__USDHC2_DATA3							0x40001382
+			MX93_PAD_SD2_CLK__USDHC2_CLK								0x148e
+			MX93_PAD_SD2_CMD__USDHC2_CMD								0x4000128e
+			MX93_PAD_SD2_DATA0__USDHC2_DATA0							0x4000128e
+			MX93_PAD_SD2_DATA1__USDHC2_DATA1							0x4000128e
+			MX93_PAD_SD2_DATA2__USDHC2_DATA2							0x4000128e
+			MX93_PAD_SD2_DATA3__USDHC2_DATA3							0x4000128e
 			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT						0x51e
 		>;
 	};
@@ -284,6 +284,18 @@
 			MX93_PAD_SD2_DATA2__USDHC2_DATA2							0x400013fe
 			MX93_PAD_SD2_DATA3__USDHC2_DATA3							0x400013fe
 			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT						0x51e
+		>;
+	};
+
+	pinctrl_usdhc2_sleep: usdhc2grpsleep {
+		fsl,pins = <
+			MX93_PAD_SD2_CLK__GPIO3_IO01            					0x51e
+			MX93_PAD_SD2_CMD__GPIO3_IO02								0x51e
+			MX93_PAD_SD2_DATA0__GPIO3_IO03								0x51e
+			MX93_PAD_SD2_DATA1__GPIO3_IO04								0x51e
+			MX93_PAD_SD2_DATA2__GPIO3_IO05								0x51e
+			MX93_PAD_SD2_DATA3__GPIO3_IO06								0x51e
+			MX93_PAD_SD2_VSELECT__GPIO3_IO19							0x51e
 		>;
 	};
 };
