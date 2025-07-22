@@ -707,7 +707,7 @@ void gtp_reset_guitar(struct i2c_client *client, s32 ms)
 	gpio_direction_output(ts->pdata->rst_gpio, 1);
 
 	usleep_range(6000, 7000);		/*  T4: > 5ms */
-	gpio_direction_input(ts->pdata->rst_gpio);
+//	gpio_direction_input(ts->pdata->rst_gpio);
 
 	gtp_int_sync(ts, 50);
 	if (ts->pdata->esd_protect)
