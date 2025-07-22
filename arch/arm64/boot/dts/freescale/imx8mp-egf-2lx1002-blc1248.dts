@@ -1,0 +1,120 @@
+/dts-v1/;
+
+#include "imx8mp-egf-2lx100x.dtsi"
+
+/ {
+	model = "2LX1002 panel with blc1248";
+	compatible = "fsl,imx8mp";
+
+
+	panel_lvds0: panel-lvds0  {
+		compatible = "panel-lvds";
+		backlight = <&disp_backlight>;
+		width-mm = <222>;
+		height-mm = <125>;
+		enable-gpios = <&gpio_exp_3v3_x16 7 0>;
+		data-mapping = "vesa-24";
+
+		panel-timing {
+			clock-frequency = <49500000>;
+			hactive = <1024>;
+			vactive = <600>;
+			hback-porch = <160>;
+			hfront-porch = <160>;
+			vback-porch = <23>;
+			vfront-porch = <12>;
+			hsync-len = <10>;
+			vsync-len = <10>;
+			de-active = <1>;
+			vsync-active = <0>;
+			hsync-active = <0>;
+			pixelclk-active = <1>;
+		};
+
+		port {
+			panel0_in: endpoint {
+				remote-endpoint = <&lvds0_out>;
+			};
+		};
+
+
+	};
+
+};
+
+&clk {
+	assigned-clock-rates = <0>, <0>,
+							<1000000000>,
+							<800000000>,
+							<500000000>,
+							<400000000>,
+							<800000000>,
+							<393216000>,
+							<361267200>,
+							<1039500000>,
+							<363825000>;
+};
+
+/* LVDS */
+&lcdif2 {
+	status = "okay";
+};
+
+&ldb {
+	status = "okay";
+
+	lvds-channel@0 {
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <24>;
+		status = "okay";
+		
+		port@1 {
+			reg = <1>;
+			lvds0_out: endpoint {
+				remote-endpoint = <&panel0_in>;
+			};
+		};
+	};
+};
+
+&ldb_phy {
+	status = "okay";
+};
+
+&i2c4 {
+		gt9110@14 {
+		compatible = "goodix,gt9xx";
+		status = "okay";
+		reg = <0x14>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ts>;
+		VDDIO-supply = <&reg_ctp_supply>;
+		edge-failling-trigger;
+		interrupt-parent = <&gpio1>;
+		interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
+		irq-gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&gpio_exp_3v3_x8 4 GPIO_ACTIVE_LOW>;
+
+		touchscreen-size-x = <1024>;
+		touchscreen-size-y = <600>;
+
+
+		touchscreen-max-id = <11>;
+		touchscreen-max-w = <512>;
+		touchscreen-max-p = <512>;
+
+		goodix,slide-wakeup = <0>;
+		goodix,type-a-report = <0>;
+		goodix,driver-send-cfg = <0>;
+		goodix,resume-in-workqueue = <0>;
+		goodix,int-sync = <1>;
+		goodix,swap-x2y = <0>;
+		goodix,esd-protect = <1>;
+		goodix,auto-update-cfg = <0>;
+		goodix,auto-update = <0>;
+		goodix,power-off-sleep = <0>;
+		goodix,pen-suppress-finger = <0>;
+		goodix,cfg-group0 = [];
+    };	
+
+};
