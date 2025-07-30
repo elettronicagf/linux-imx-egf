@@ -388,7 +388,7 @@
 &usb3_1 {
 	fsl,disable-port-power-control;
 	fsl,permanently-attached;
-	status = "okay";
+	status = "disabled";
 };
 
 &usb_dwc3_1 {
