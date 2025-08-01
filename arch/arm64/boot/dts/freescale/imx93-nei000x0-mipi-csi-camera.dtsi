@@ -1,0 +1,160 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2022 NXP
+ */
+
+#include <dt-bindings/pwm/pwm.h>
+
+/ {
+
+	reg_dvdd_sel: regulator-dvdd_sel {
+        compatible = "regulator-fixed";
+        regulator-name = "DVDD_SEL";
+        gpio = <&adp5585gpio_isp 0 GPIO_ACTIVE_HIGH>;
+        enable-active-high;
+        startup-delay-us = <2000>;
+	};
+
+	reg_dvdd_1v2: regulator-dvdd {
+        compatible = "regulator-fixed";
+        regulator-name = "DVDD_1V2";
+        gpio = <&adp5585gpio_isp 6 GPIO_ACTIVE_HIGH>;
+        regulator-min-microvolt = <1200000>;
+        regulator-max-microvolt = <1200000>;
+        enable-active-high;
+        vin-supply = <&reg_dvdd_sel>;
+	};
+
+	reg_vdd_3v3: regulator-vdd {
+        compatible = "regulator-fixed";
+        regulator-name = "VDD_3V3";
+        gpio = <&adp5585gpio_isp 5 GPIO_ACTIVE_HIGH>;
+        regulator-min-microvolt = <3300000>;
+        regulator-max-microvolt = <3300000>;
+        startup-delay-us = <4000>;
+        enable-active-high;
+	};
+	
+	reg_vddio_1v8: regulator-vddo {
+        compatible = "regulator-fixed";
+        regulator-name = "VDDIO_1V8";
+        gpio = <&adp5585gpio_isp 9 GPIO_ACTIVE_HIGH>;
+        regulator-min-microvolt = <1800000>;
+        regulator-max-microvolt = <1800000>;
+        startup-delay-us = <4000>;
+        enable-active-high;
+        vin-supply = <&reg_vdd_3v3>;
+	};
+
+	reg_vaa_sel: regulator-vaa_sel {
+        compatible = "regulator-fixed";
+        regulator-name = "VAA_SEL";
+        gpio = <&adp5585gpio_isp 1 GPIO_ACTIVE_HIGH>;
+        enable-active-high;
+	};
+
+	reg_avdd_2v8: regulator-avdd {
+        compatible = "regulator-fixed";
+        regulator-name = "AVDD_2V8";
+        gpio = <&adp5585gpio_isp 7 GPIO_ACTIVE_HIGH>;
+        regulator-min-microvolt = <2800000>;
+        regulator-max-microvolt = <2800000>;
+        enable-active-high;
+        vin-supply = <&reg_vaa_sel>;
+	};
+
+};
+
+//=============================================================================
+//=== I2C1
+//=============================================================================
+&lpi2c1 {
+	status = "okay";
+
+	adp5585_isp: mfd-isp@34 {	// gpio expander
+		compatible = "adi,adp5585";
+		reg = <0x34>;
+		status = "okay";
+		
+		adp5585gpio_isp: gpio-isp@34 {
+			compatible = "adp5585-gpio";
+			gpio-controller;
+			#gpio-cells = <2>;
+		};
+		
+		adp5585pwm_isp: pwm-isp@34 {
+			compatible = "adp5585-pwm";
+			#pwm-cells = <3>;
+		};
+	};
+	
+	ap1302: ap1302_mipi@3c {	// isp
+		compatible = "onsemi,ap1302";
+		reg = <0x3c>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ap1302>;
+		reset-gpios = <&gpio2 7 GPIO_ACTIVE_LOW>;
+		isp_en-gpios = <&adp5585gpio_isp 2 GPIO_ACTIVE_HIGH>;
+		DVDD-supply = <&reg_dvdd_1v2>;
+		VDDIO-supply = <&reg_vddio_1v8>;
+		AVDD-supply = <&reg_avdd_2v8>;
+		status = "okay";
+                
+		port {
+			ar1302_mipi_ep: endpoint {
+				remote-endpoint = <&mipi_csi_ep>;
+			};
+		};
+	};
+};
+
+//=============================================================================
+//=== CAMERA
+//=============================================================================
+&epxp {
+	status = "okay";
+};
+
+&cameradev {
+	status = "okay";
+};
+
+&isi_0 {
+	status = "okay";
+
+	cap_device {
+		status = "okay";
+	};
+};
+
+&mipi_csi {
+	status = "okay";
+
+	port {
+		mipi_csi_ep: endpoint {
+			remote-endpoint = <&ar1302_mipi_ep>;
+			data-lanes = <2>;
+			cfg-clk-range = <28>;
+			hs-clk-range = <0x2b>;
+			bus-type = <4>;
+		};
+	};
+};
+
+
+
+//=============================================================================
+//#############################################################################
+//=== PINMUX
+//#############################################################################
+//=============================================================================
+&iomuxc {
+	pinctrl-names = "default";
+	
+	pinctrl_ap1302: regap1302grp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO07__GPIO2_IO07								0x31e
+		>;
+	};
+
+};
