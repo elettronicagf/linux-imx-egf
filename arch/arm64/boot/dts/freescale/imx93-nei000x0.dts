@@ -10,6 +10,7 @@
 #include "imx93-nei000x0-adapter.dtsi"
 #include "imx93-nei000x0-carrier.dtsi"
 #include "imx93-nei000x0-lvds-panel.dtsi"
+#include "imx93-nei000x0-mipi-csi-camera.dtsi"
 #include "imx93-nei000x0-gpio-labels.dtsi"
 
 &ele_fw2 {
