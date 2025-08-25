@@ -394,7 +394,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb \
 			  imx93-11x11-evk-rpmsg.dtb imx93-11x11-evk-rpmsg-lpv.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx93-egf-3pb1001.dtb \
-                          imx93-egf-3hi5005.dtb
+                          imx93-egf-3hi5005.dtb imx93-egf-3hi5011.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx91-11x11-evk.dtb \
 			  imx91-11x11-evk-flexspi-m2.dtb imx91-11x11-evk-flexspi-nand-m2.dtb \
