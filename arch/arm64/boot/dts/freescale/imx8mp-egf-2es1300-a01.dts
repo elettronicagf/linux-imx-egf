@@ -9,7 +9,6 @@
  
  / {
 	 model = "EGF 2ES1300-A01";
-	 compatible = "fsl,imx8mp";
   
 	  reg_dsi_supply: regulator-3v3-dsi{
 		 compatible = "regulator-fixed";

@@ -1,3 +1,6 @@
 /dts-v1/;
 
 #include "imx8mp-egf-2lx100x.dtsi"
+ / {
+    model = "EGF 2LX1001";
+ };

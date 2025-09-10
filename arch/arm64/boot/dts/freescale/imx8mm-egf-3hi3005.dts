@@ -8,6 +8,8 @@
  #include "imx8mm-egf-3pb1002.dts"
  
  / {
+    model = "EGF 3HI3005";
+
     reg_ts_enable: regulator-ts-ena  {
         compatible = "regulator-fixed";
         regulator-name = "regulator-ts-ena";	

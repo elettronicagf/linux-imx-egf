@@ -9,8 +9,7 @@
 #include "imx93-egf-3pb1001.dts"
 
 / {
-	model = "EGF 3HI5011 panel";
-	compatible = "fsl,imx93";
+	model = "EGF 3HI5011";
  
  	reg_dsi_supply: regulator-3v3-dsi{
 		compatible = "regulator-fixed";

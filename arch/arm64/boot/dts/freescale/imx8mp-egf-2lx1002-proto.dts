@@ -3,8 +3,7 @@
 #include "imx8mp-egf-2lx100x.dtsi"
 
 / {
-	model = "2LX1002 panel proto BLC1225";
-	compatible = "fsl,imx8mp";
+	model = "EGF 2LX1002/PROTO/BLC1225";
 
 	reg_dsi_supply: regulator-3v3-dsi{
 		compatible = "regulator-fixed";

@@ -8,8 +8,7 @@
  #include "imx8mp-egf-3sm1009.dtsi"
  
  / {
-	 model = "EGF 2LX1000X board";
-	 compatible = "fsl,imx8mp";
+	 model = "EGF 2LX100X";
 
 
 	reg_vcc_5v0_usb0: regulator-5v0-usb0 {
