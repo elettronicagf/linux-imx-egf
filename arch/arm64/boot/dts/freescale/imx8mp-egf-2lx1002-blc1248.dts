@@ -3,9 +3,7 @@
 #include "imx8mp-egf-2lx100x.dtsi"
 
 / {
-	model = "2LX1002 panel with blc1248";
-	compatible = "fsl,imx8mp";
-
+	model = "EGF 2LX1002/BLC1248";
 
 	panel_lvds0: panel-lvds0  {
 		compatible = "panel-lvds";

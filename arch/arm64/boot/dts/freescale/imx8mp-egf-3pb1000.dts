@@ -8,8 +8,7 @@
  #include "imx8mp-egf-3sm2008.dtsi"
  
  / {
-	 model = "EGF 3SM2008 board";
-	 compatible = "fsl,imx8mp";
+	 model = "EGF 3PB1000";
 
      reg_can1_stby: regulator-can1-stby {
         compatible = "regulator-fixed";

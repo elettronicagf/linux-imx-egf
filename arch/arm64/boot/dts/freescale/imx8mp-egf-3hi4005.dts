@@ -8,10 +8,8 @@
 
 #include "imx8mp-egf-3pb1001.dts"
 
-
  / {
-	model = "EGF 3HI4005 panel";
-	compatible = "fsl,imx8mp";
+	model = "EGF 3HI4005";
  
  	reg_dsi_supply: regulator-3v3-dsi{
 		compatible = "regulator-fixed";

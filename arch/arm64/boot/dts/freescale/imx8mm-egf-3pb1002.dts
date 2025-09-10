@@ -3,8 +3,7 @@
  #include "imx8mm-egf-3sm1008m.dtsi"
  
  / {
-	 model = "EGF 3PB1002 board";
-	 compatible = "fsl,imx8mm";
+	 model = "EGF 3PB1002";
 
 
 	 can0_osc: can0_osc {

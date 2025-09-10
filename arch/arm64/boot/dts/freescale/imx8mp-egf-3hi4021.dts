@@ -10,7 +10,7 @@
 #include <dt-bindings/pwm/pwm.h>
 
  / {
-	model = "EGF 3HI4021 panel 21 inch";
+	model = "EGF 3HI4021";
 	compatible = "fsl,imx8mp";
  
  	reg_dsi_supply: regulator-3v3-dsi{

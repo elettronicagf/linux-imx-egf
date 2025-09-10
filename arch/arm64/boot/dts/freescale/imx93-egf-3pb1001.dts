@@ -3,8 +3,7 @@
 #include "imx93-egf-3sm1010.dtsi"
 
 / {
-	model = "EGF iMX93 3PB1001 panel";
-	compatible = "fsl,imx93";
+	model = "EGF iMX93 3PB1001";
 
 	sound {
 		compatible = "simple-audio-card";

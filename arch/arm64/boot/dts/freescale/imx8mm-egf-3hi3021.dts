@@ -6,3 +6,6 @@
  /dts-v1/;
 
  #include "imx8mm-egf-3pb1002.dts"
+ / {
+    model = "EGF 3HI3021";
+ };
