@@ -509,6 +509,17 @@
 	status = "okay";
 };
 
+&sai6 {
+	#sound-dai-cells = <0>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_sai6>;
+	assigned-clocks = <&clk IMX8MP_CLK_SAI6>;
+	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
+	assigned-clock-rates = <24576000>;
+	fsl,sai-mclk-direction-output;
+	status = "okay";
+};
+
 &xcvr {
 	#sound-dai-cells = <0>;
 	status = "okay";
@@ -633,10 +644,16 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_egf>,  <&pinctrl_fgpa_jtag>;
 
-	pinctrl_egf: egfgrp {
-		// gpio reset# LTE module
+	pinctrl_egf: egfgrp {		
 		fsl,pins = <
-			MX8MP_IOMUXC_SAI5_MCLK__GPIO3_IO25         0x00000106
+			MX8MP_IOMUXC_SAI5_MCLK__GPIO3_IO25         0x00000106  // gpio reset# LTE module
+			MX8MP_IOMUXC_SAI1_TXD3__GPIO4_IO15         0x00000106  // gpio PRES_KEY_ISO_1V8 (pull down)
+			MX8MP_IOMUXC_SAI1_RXD2__GPIO4_IO04         0x000001C6  // gpio KEYB_EMRFLT_1V8 (pull up)
+			MX8MP_IOMUXC_SAI1_TXD7__GPIO4_IO19         0x000001C6  // gpio M2_B_INT_1V8 (pull up)
+			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18         0x000001C6  // gpio KEY_INFLT_1V8 (pull up)
+			MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05         0x000001C6  // gpio IOEXP_nINT_1V8 (pull up)
+			MX8MP_IOMUXC_SAI5_RXC__GPIO3_IO20          0x000001C6  // gpio IO HS_PTT_1V8 (pull up)
+			MX8MP_IOMUXC_SAI5_RXFS__GPIO3_IO19         0x000001C6  // gpio IO HS_HOOK_1V8 (pull up)
 		>;
 	};
 
@@ -739,6 +756,17 @@
 	pinctrl_ecspi2_cs: ecspi2cs {
 		fsl,pins = <
 			MX8MP_IOMUXC_ECSPI2_SS0__GPIO5_IO13		0x40000
+		>;
+	};
+
+
+	pinctrl_sai6: sai6grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SAI1_RXD6__AUDIOMIX_SAI6_TX_SYNC	0xd6
+			MX8MP_IOMUXC_SAI1_RXD4__AUDIOMIX_SAI6_TX_BCLK	0xd6
+			MX8MP_IOMUXC_SAI1_RXD5__AUDIOMIX_SAI6_RX_DATA00	0xd6
+			MX8MP_IOMUXC_SAI1_TXD5__AUDIOMIX_SAI6_TX_DATA00	0xd6
+			MX8MP_IOMUXC_SAI1_RXD7__AUDIOMIX_SAI6_MCLK	0xd6
 		>;
 	};
 
