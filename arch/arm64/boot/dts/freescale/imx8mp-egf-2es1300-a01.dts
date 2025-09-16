@@ -547,15 +547,7 @@
 	pinctrl-0 = <&pinctrl_uart3>;
 	assigned-clocks = <&clk IMX8MP_CLK_UART3>;
 	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
-	uart-has-rtscts;
 	status = "okay";
-
- /* WIP
-	bluetooth {
-		compatible = "nxp,88w8987-bt";
-		fw-init-baudrate = <3000000>;
-	};
-	*/
 };
 
 &uart4 {
@@ -563,11 +555,7 @@
 	pinctrl-0 = <&pinctrl_uart4>;
 	assigned-clocks = <&clk IMX8MP_CLK_UART4>;
 	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
-	linux,rs485-enabled-at-boot-time;
-	linux,rs485-rts-after-send;
-	rts-gpios = <&gpio5 5 GPIO_ACTIVE_LOW>;
 	status = "okay";
-
 };
 
 
@@ -721,7 +709,6 @@
 		fsl,pins = <
 			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX	0x00000146
 			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX	0x00000146
-			MX8MP_IOMUXC_SPDIF_EXT_CLK__GPIO5_IO05	0x46
 		>;
 	};
 
