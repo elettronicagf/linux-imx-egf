@@ -675,8 +675,8 @@
 
 	pinctrl_flexcan1: flexcan1grp {
 		fsl,pins = <
-            MX8MP_IOMUXC_SAI5_RXD1__CAN1_TX          0x154
-			MX8MP_IOMUXC_SAI5_RXD2__CAN1_RX          0x154
+            MX8MP_IOMUXC_HDMI_DDC_SCL__CAN1_TX          0x154
+			MX8MP_IOMUXC_HDMI_DDC_SDA__CAN1_RX          0x154
 		>;
 	};
 
