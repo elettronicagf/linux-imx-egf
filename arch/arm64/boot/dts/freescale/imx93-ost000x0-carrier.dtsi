@@ -224,9 +224,9 @@
 &lpi2c2 {
 	status = "okay";
 	
-	eeprom_at24c32: eeprom@48 {
+	eeprom_at24c32: eeprom@50 {
 		compatible = "atmel,24c32";
-		reg = <0x48>;
+		reg = <0x50>;
 		pagesize = <32>;
 		num-addresses = <8>;
 	};
