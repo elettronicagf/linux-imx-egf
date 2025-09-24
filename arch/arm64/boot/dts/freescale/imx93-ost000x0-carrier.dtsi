@@ -9,8 +9,8 @@
 / {
 
 	aliases {
-		rtc0 = &pcf85263;
-		rtc1 = &bbnsm_rtc;
+		rtc0 = &bbnsm_rtc;
+		rtc1 = &pcf85263;
 	};
 
 	// REGULATORS
@@ -360,11 +360,15 @@
 //=== USDHC3 usd
 //=============================================================================
 &usdhc3 {
+/*	
 	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
 	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_usdhc3_gpio>;
 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>, <&pinctrl_usdhc3_gpio>;
 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>, <&pinctrl_usdhc3_gpio>;
 	pinctrl-3 = <&pinctrl_usdhc3_sleep>, <&pinctrl_usdhc3_gpio_sleep>;
+*/
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_usdhc3_gpio>;
 	cd-gpios = <&gpio2 20 GPIO_ACTIVE_LOW>;
 	vmmc-supply = <&reg_3v3>;
 	bus-width = <4>;
@@ -601,12 +605,12 @@
 	/* need to config the SION for data and cmd pad, refer to ERR052021 */
 	pinctrl_usdhc3: usdhc3grp {
 		fsl,pins = <
-			MX93_PAD_SD3_CLK__USDHC3_CLK								0x148e
-			MX93_PAD_SD3_CMD__USDHC3_CMD								0x4000128e
-			MX93_PAD_SD3_DATA0__USDHC3_DATA0							0x4000128e
-			MX93_PAD_SD3_DATA1__USDHC3_DATA1							0x4000128e
-			MX93_PAD_SD3_DATA2__USDHC3_DATA2							0x4000128e
-			MX93_PAD_SD3_DATA3__USDHC3_DATA3							0x4000128e
+			MX93_PAD_SD3_CLK__USDHC3_CLK								0x1506
+			MX93_PAD_SD3_CMD__USDHC3_CMD								0x40001106
+			MX93_PAD_SD3_DATA0__USDHC3_DATA0							0x40001106
+			MX93_PAD_SD3_DATA1__USDHC3_DATA1							0x40001106
+			MX93_PAD_SD3_DATA2__USDHC3_DATA2							0x40001106
+			MX93_PAD_SD3_DATA3__USDHC3_DATA3							0x40001106
 		>;
 	};
 	
