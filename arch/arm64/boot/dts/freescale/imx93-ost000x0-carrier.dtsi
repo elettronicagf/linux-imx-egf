@@ -261,13 +261,16 @@
 	status = "okay";
 	
 	eeprom_at25256B: eeprom@0 {
-		compatible = "atmel,at25256B", "atmel,at25";
+		compatible = "atmel,at25";
+		spi-max-frequency = <5000000>;
+		spi-cpha;
+		spi-cpol;
 		size = <0x8000>;
 		pagesize = <64>;
 		reg = <0>;
 		address-width = <16>;
 	};	
-	
+
 };
 
 //=============================================================================
@@ -459,10 +462,10 @@
 
 	pinctrl_lpspi1: lpspi1grp {
 		fsl,pins = <
-			MX93_PAD_SAI1_TXFS__GPIO1_IO11								0x000009fe
-			MX93_PAD_SAI1_RXD0__LPSPI1_SOUT            					0x000005fe
-			MX93_PAD_SAI1_TXC__LPSPI1_SIN              					0x000005fe
-			MX93_PAD_SAI1_TXD0__LPSPI1_SCK             					0x000005fe
+			MX93_PAD_SAI1_TXFS__GPIO1_IO11								0x3fe
+			MX93_PAD_SAI1_RXD0__LPSPI1_SOUT            					0x5fe
+			MX93_PAD_SAI1_TXC__LPSPI1_SIN              					0x5fe
+			MX93_PAD_SAI1_TXD0__LPSPI1_SCK             					0x5fe
 		>;
 	};
 
