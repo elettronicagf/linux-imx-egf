@@ -227,6 +227,7 @@
 	eeprom_at24c32: eeprom@50 {
 		compatible = "atmel,24c32";
 		reg = <0x50>;
+		vcc-supply = <&reg_nvcc_aon_vio>;
 		pagesize = <32>;
 		num-addresses = <8>;
 	};
