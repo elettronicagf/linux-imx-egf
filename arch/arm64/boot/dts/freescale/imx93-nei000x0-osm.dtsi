@@ -80,8 +80,9 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 	clock-frequency = <400000>;
-	pinctrl-names = "default";
+	pinctrl-names = "default","sleep";
 	pinctrl-0 = <&pinctrl_lpi2c1>;
+	pinctrl-1 = <&pinctrl_lpi2c1>;
 	status = "disabled";	
 };
 
@@ -92,8 +93,9 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 	clock-frequency = <400000>;
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_lpi2c2>;
+	pinctrl-1 = <&pinctrl_lpi2c2>;
 	status = "okay";
 
 	pmic@25 {
@@ -103,7 +105,6 @@
 		pinctrl-0 = <&pinctrl_pca9451>;
 		interrupt-parent = <&gpio2>;
 		interrupts = <29 IRQ_TYPE_EDGE_FALLING>;
-		sd-vsel-gpios = <&gpio3 19 GPIO_ACTIVE_HIGH>;
 
 		regulators {
 			buck1: BUCK1 {
@@ -183,8 +184,9 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 	clock-frequency = <400000>;
-	pinctrl-names = "default";
+	pinctrl-names = "default","sleep";
 	pinctrl-0 = <&pinctrl_lpi2c5>;
+	pinctrl-1 = <&pinctrl_lpi2c5>;
 	status = "disabled";	
 };
 
