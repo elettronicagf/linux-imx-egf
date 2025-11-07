@@ -1,0 +1,712 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2022 NXP
+ */
+
+
+#include <dt-bindings/leds/common.h>
+
+/ {
+
+	aliases {
+		rtc0 = &bbnsm_rtc;
+		rtc1 = &pcf85263;
+	};
+
+	// REGULATORS
+	reg_5v_sys: regulator-5V-sys {
+		// U3 system voltage 5V TPS54361 @3.5A
+		compatible = "regulator-fixed";
+		regulator-name = "VSYS_5V";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+	};
+
+	reg_3v3: regulator-3V3 {
+		// U7 regulator for 3V3 TPS54361 @3.5A
+		compatible = "regulator-fixed";
+		regulator-name = "REG_3V3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+
+	};
+
+	reg_1v8_vdd: regulator-1V8 {
+		// U1 regulator for 1V8 AP7361E @1A
+		compatible = "regulator-fixed";
+		regulator-name = "REG_1V8";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		vin-supply = <&reg_3v3>;
+	};
+
+	reg_vref_1v8: regulator-adc-vref {
+		compatible = "regulator-fixed";
+		regulator-name = "vref_1v8";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+	};
+
+	reg_aon_dly: regulator-aon-dly {
+		// U6 regulator for 1V8 or 3V3 dependig on mountig
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_reg_aon_dly>;
+		regulator-name = "REG_AON_DLY";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		vin-supply = <&reg_3v3>;
+		gpio = <&gpio2 24 GPIO_ACTIVE_HIGH>;
+		off-on-delay-us = <12000>;
+		enable-active-low;		
+	};
+
+	reg_usdhc2_vmmc: regulator-usdhc2  {
+		// uSD2 pwr-enable
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
+		regulator-name = "VSD2_3V3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		vin-supply = <&reg_3v3>;
+		gpio = <&gpio2 16 GPIO_ACTIVE_HIGH>;
+		off-on-delay-us = <12000>;
+		enable-active-high;		
+	};
+
+	reg_usdhc3_vmmc: regulator-usdhc3  {
+		// uSD3 pwr-enable
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_reg_usdhc3_vmmc>;
+		regulator-name = "VSD3_3V3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		vin-supply = <&reg_3v3>;
+		gpio = <&gpio2 17 GPIO_ACTIVE_HIGH>;
+		off-on-delay-us = <12000>;
+		enable-active-high;
+		regulator-always-on;	
+	};
+
+	reg_usb1: regulator-usb1 {
+		// U23 regulator for USB1 AP22811AW5-7
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_reg_usb_vbus1>;
+		regulator-name = "USB_VBUS1";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		vin-supply = <&reg_5v_sys>;
+		gpio = <&gpio2 12 GPIO_ACTIVE_LOW>;
+		off-on-delay-us = <12000>;
+		enable-active-low;
+	};
+
+	reg_usb2: regulator-usb2 {
+		// U24 regulator for USB2 AP22811AW5-7
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_reg_usb_vbus2>;
+		regulator-name = "USB_VBUS2";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		vin-supply = <&reg_5v_sys>;
+		gpio = <&gpio2 14 GPIO_ACTIVE_LOW>;
+		off-on-delay-us = <12000>;
+		enable-active-low;
+	};
+
+/*
+	reg_3v3_camera: regulator-3v3-camera {
+		// U38 regulator for MIPI-CSI camera AP22811AW5-7
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_reg_3v3_camera>;
+		regulator-name = "3V3_CAMERA";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		vin-supply = <&reg_3v3>;
+		gpio = <&gpio2 16 GPIO_ACTIVE_HIGH>;
+		off-on-delay-us = <12000>;
+		enable-active-high;
+	};
+
+	reg_3v3_ts: regulator-3v3-ts {
+		// U37 regulator for DSI AP22811AW5-7
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_reg_3v3_ts>;
+		regulator-name = "3V3_TS";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		vin-supply = <&reg_3v3_vio>;
+		gpio = <&gpio2 17 GPIO_ACTIVE_LOW>;
+		off-on-delay-us = <12000>;
+		enable-active-low;
+	};
+*/
+
+	gpio_user: gpio_user {
+		// gpios tested as regulators
+		compatible = "regulator-fixed";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_gpio_user>;
+		regulator-name = "BOARD_GPIO_CONFIG";
+		status = "okay";
+	};
+
+};
+
+
+//=============================================================================
+//=== ADC
+//=============================================================================
+&adc1 {
+	vref-supply = <&reg_vref_1v8>;
+	status = "okay";
+};
+
+//=============================================================================
+//=== EQOS
+//=============================================================================
+&eqos {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_eqos>;
+	phy-mode = "rgmii-id";
+	phy-handle = <&ethphy1>;
+	status = "okay";
+
+	mdio {
+		compatible = "snps,dwmac-mdio";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		clock-frequency = <5000000>;
+
+		ethphy1: ethernet-phy@7 {
+			compatible = "ethernet-phy-ieee802.3-c22";
+			reg = <7>;
+			reset-gpios = <&gpio3 26 GPIO_ACTIVE_LOW>;
+			reset-assert-us = <10000>;
+			reset-deassert-us = <80000>;
+		};
+	};
+};
+
+//=============================================================================
+//=== FEC
+//=============================================================================
+&fec {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_fec>;
+	phy-mode = "rgmii-id";
+	phy-handle = <&ethphy2>;
+	fsl,magic-packet;
+	status = "okay";
+
+	mdio {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		clock-frequency = <5000000>;
+
+		ethphy2: ethernet-phy@5 {
+			compatible = "ethernet-phy-ieee802.3-c22";
+			reg = <5>;
+			reset-gpios = <&gpio3 27 GPIO_ACTIVE_LOW>;
+			reset-assert-us = <10000>;
+			reset-deassert-us = <80000>;
+		};
+	};
+};
+
+//=============================================================================
+//=== CAN1
+//=============================================================================
+&flexcan1 {
+	status = "okay";
+};
+
+//=============================================================================
+//=== I2C1
+//=============================================================================
+&lpi2c1 {
+	status = "okay";
+	
+	pcf85263: rtc@51 {
+		compatible = "nxp,pcf85263";
+		reg = <0x51>;
+	};	
+};	
+
+//=============================================================================
+//=== I2C2
+//=============================================================================
+&lpi2c2 {
+	status = "okay";
+
+	sensor@48 {
+		compatible = "ti,tmp102";
+		reg = <0x48>;
+		interrupt-parent = <&gpio2>;
+		interrupts = <21 IRQ_TYPE_LEVEL_LOW>;
+		vcc-supply = <&reg_3v3>;
+		#thermal-sensor-cells = <1>;
+	};
+
+};
+
+//=============================================================================
+//=== I2C5
+//=============================================================================
+&lpi2c5 {
+	status = "okay";
+	
+	eeprom_at24c32: eeprom@50 {
+		compatible = "atmel,24c32";
+		reg = <0x50>;
+		vcc-supply = <&reg_1v8_vdd>;
+		pagesize = <32>;
+		num-addresses = <8>;
+	};
+};	
+
+//=============================================================================
+//=== SPI1
+//=============================================================================
+&lpspi1 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	fsl,spi-num-chipselects = <1>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_lpspi1>;
+	cs-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>;
+	status = "okay";
+	
+	eeprom_at25256B: eeprom@0 {
+		compatible = "atmel,at25";
+		spi-max-frequency = <5000000>;
+		spi-cpha;
+		spi-cpol;
+		size = <0x8000>;
+		pagesize = <64>;
+		reg = <0>;
+		address-width = <16>;
+	};
+};
+
+//=============================================================================
+//=== SPI6
+//=============================================================================
+&lpspi6 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	fsl,spi-num-chipselects = <1>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_lpspi6>;
+	cs-gpios = <&gpio2 00 GPIO_ACTIVE_LOW>;
+	status = "okay";
+	
+	eeprom_at25256B_2: eeprom@0 {
+		compatible = "atmel,at25";
+		spi-max-frequency = <5000000>;
+		spi-cpha;
+		spi-cpol;
+		size = <0x8000>;
+		pagesize = <64>;
+		reg = <0>;
+		address-width = <16>;
+	};	
+		
+};
+
+//=============================================================================
+//=== UART1 console
+//=============================================================================
+&lpuart1 { /* console */
+	status = "okay";
+};
+
+//=============================================================================
+//=== UART2
+//=============================================================================
+&lpuart2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart2>;
+	status = "okay";
+};
+
+//=============================================================================
+//=== UART6 RS232
+//=============================================================================
+&lpuart6 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart6>;
+	uart-has-rtscts;
+	status = "okay";
+};
+
+//=============================================================================
+//=== UART7 RS232
+//=============================================================================
+&lpuart7 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart7>;
+	uart-has-rtscts;
+	status = "okay";
+};
+
+//=============================================================================
+//=== USB2 otg
+//=============================================================================
+&usbotg1 {
+	dr_mode = "host";
+	/delete-property/ hnp-disable;
+	/delete-property/ srp-disable;
+	/delete-property/ adp-disable;
+	/delete-property/ usb-role-switch;
+	status = "okay";
+};
+
+//=============================================================================
+//=== USB2 host
+//=============================================================================
+&usbotg2 {
+	status = "okay";
+};
+
+//=============================================================================
+//=== USDHC2 usd
+//=============================================================================
+&usdhc2 {
+ 	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+	cd-gpios = <&gpio3 00 GPIO_ACTIVE_LOW>;
+	fsl,cd-gpio-wakeup-disable;
+	vmmc-supply = <&reg_usdhc2_vmmc>;
+	bus-width = <4>;
+	no-mmc;
+	status = "okay";
+};
+
+//=============================================================================
+//=== USDHC3 usd
+//=============================================================================
+&usdhc3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_usdhc3_gpio>;
+	cd-gpios = <&gpio2 20 GPIO_ACTIVE_LOW>;
+	vmmc-supply = <&reg_usdhc3_vmmc>;
+	bus-width = <4>;
+	no-sdio;
+	no-mmc;
+	status = "okay";
+};
+
+//=============================================================================
+//=== TPM4
+//=============================================================================
+&tpm4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_tpm4>;
+	status = "okay";
+};
+
+//=============================================================================
+//=== TPM5
+//=============================================================================
+&tpm5 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_tpm5>;
+	status = "okay";
+};
+
+
+
+
+//=============================================================================
+//#############################################################################
+//=== PINMUX
+//#############################################################################
+//=============================================================================
+&iomuxc {
+
+	pinctrl_reg_aon_dly: regaondlygrp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO24__GPIO2_IO24								0x91e
+		>;
+	};
+
+	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO16__GPIO2_IO16								0x31e
+		>;
+	};
+
+	pinctrl_reg_usdhc3_vmmc: regusdhc3vmmcgrp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO17__GPIO2_IO17								0x31e
+		>;
+	};
+	
+	pinctrl_gpio_user: gpiousrgrp {
+		fsl,pins = <
+			MX93_PAD_DAP_TCLK_SWCLK__GPIO3_IO30							0x51e
+			MX93_PAD_DAP_TDI__GPIO3_IO28								0x51e
+			MX93_PAD_DAP_TDO_TRACESWO__GPIO3_IO31						0x51e
+			MX93_PAD_DAP_TMS_SWDIO__GPIO3_IO29							0x51e
+		>;
+	};
+	
+/*
+	pinctrl_reg_3v3_camera: reg3v3cameragrp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO16__GPIO2_IO16								0x31e
+		>;
+	};	
+
+	pinctrl_reg_3v3_ts: reg3v3tsgrp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO17__GPIO2_IO17								0x91e
+		>;
+	};
+*/
+	pinctrl_uart2: uart2grp {
+		fsl,pins = <
+			MX93_PAD_UART2_TXD__LPUART2_TX								0x31e
+			MX93_PAD_UART2_RXD__LPUART2_RX								0x31e
+		>;
+	};
+
+	pinctrl_uart3: uart3grp {
+		fsl,pins = <
+		    MX93_PAD_GPIO_IO14__LPUART3_TX								0x31e
+            MX93_PAD_GPIO_IO15__LPUART3_RX								0x31e
+            MX93_PAD_GPIO_IO16__LPUART3_CTS_B							0x31e
+            MX93_PAD_GPIO_IO17__LPUART3_RTS_B							0x31e
+		>;
+	};
+
+	pinctrl_uart6: uart6grp {
+		fsl,pins = <
+		    MX93_PAD_GPIO_IO04__LPUART6_TX								0x31e
+            MX93_PAD_GPIO_IO05__LPUART6_RX								0x31e
+            MX93_PAD_GPIO_IO06__LPUART6_CTS_B							0x31e
+            MX93_PAD_GPIO_IO07__LPUART6_RTS_B							0x31e
+		>;
+	};
+
+	pinctrl_uart7: uart7grp {
+		fsl,pins = <
+		    MX93_PAD_GPIO_IO08__LPUART7_TX								0x31e
+            MX93_PAD_GPIO_IO09__LPUART7_RX								0x31e
+            MX93_PAD_GPIO_IO10__LPUART7_CTS_B							0x31e
+            MX93_PAD_GPIO_IO11__LPUART7_RTS_B							0x31e
+		>;
+	};
+
+	pinctrl_lpspi1: lpspi1grp {
+		fsl,pins = <
+			MX93_PAD_SAI1_TXFS__GPIO1_IO11								0x3fe
+			MX93_PAD_SAI1_RXD0__LPSPI1_SOUT            					0x5fe
+			MX93_PAD_SAI1_TXC__LPSPI1_SIN              					0x5fe
+			MX93_PAD_SAI1_TXD0__LPSPI1_SCK             					0x5fe
+		>;
+	};
+
+	pinctrl_lpspi6: lpspi6grp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO00__GPIO2_IO00								0x3fe
+			MX93_PAD_GPIO_IO02__LPSPI6_SOUT            					0x5fe
+			MX93_PAD_GPIO_IO01__LPSPI6_SIN              				0x5fe
+			MX93_PAD_GPIO_IO03__LPSPI6_SCK             					0x5fe
+		>;
+	};
+
+	pinctrl_reg_usb_vbus1: regusbvbus1grp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO12__GPIO2_IO12								0x31e
+		>;
+	};
+
+	pinctrl_reg_usb_vbus2: regusbvbus2grp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO14__GPIO2_IO14								0x31e
+		>;
+	};
+
+	pinctrl_eqos: eqosgrp {
+		fsl,pins = <		
+			MX93_PAD_ENET1_MDC__ENET_QOS_MDC							0x57e
+			MX93_PAD_ENET1_MDIO__ENET_QOS_MDIO							0x57e
+			MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0						0x57e
+			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1						0x57e
+			MX93_PAD_ENET1_RD2__ENET_QOS_RGMII_RD2						0x57e
+			MX93_PAD_ENET1_RD3__ENET_QOS_RGMII_RD3						0x57e
+			MX93_PAD_ENET1_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK		0x58e
+			MX93_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL				0x57e
+			MX93_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0						0x57e
+			MX93_PAD_ENET1_TD1__ENET_QOS_RGMII_TD1						0x57e
+			MX93_PAD_ENET1_TD2__ENET_QOS_RGMII_TD2						0x57e
+			MX93_PAD_ENET1_TD3__ENET_QOS_RGMII_TD3						0x57e
+			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK		0x58e
+			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL				0x57e
+			MX93_PAD_CCM_CLKO1__GPIO3_IO26								0x91e
+		>;
+	};
+
+	pinctrl_fec: fecgrp {
+		fsl,pins = <
+			MX93_PAD_ENET2_MDC__ENET1_MDC								0x57e
+			MX93_PAD_ENET2_MDIO__ENET1_MDIO								0x57e
+			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0							0x57e
+			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1							0x57e
+			MX93_PAD_ENET2_RD2__ENET1_RGMII_RD2							0x57e
+			MX93_PAD_ENET2_RD3__ENET1_RGMII_RD3							0x57e
+			MX93_PAD_ENET2_RXC__ENET1_RGMII_RXC							0x58e
+			MX93_PAD_ENET2_RX_CTL__ENET1_RGMII_RX_CTL					0x57e
+			MX93_PAD_ENET2_TD0__ENET1_RGMII_TD0							0x57e
+			MX93_PAD_ENET2_TD1__ENET1_RGMII_TD1							0x57e
+			MX93_PAD_ENET2_TD2__ENET1_RGMII_TD2							0x57e
+			MX93_PAD_ENET2_TD3__ENET1_RGMII_TD3							0x57e
+			MX93_PAD_ENET2_TXC__ENET1_RGMII_TXC							0x58e
+			MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL					0x57e
+			MX93_PAD_CCM_CLKO2__GPIO3_IO27								0x91e
+		>;
+	};
+
+	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
+		fsl,pins = <
+			MX93_PAD_SD2_CD_B__GPIO3_IO00								0x31e
+		>;
+	};
+
+	pinctrl_usdhc2_gpio_sleep: usdhc2gpiogrpsleep {
+		fsl,pins = <
+			MX93_PAD_SD2_CD_B__GPIO3_IO00								0x51e
+		>;
+	};
+
+	pinctrl_usdhc3_gpio: usdhc3gpiogrp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO20__GPIO2_IO20								0x31e
+		>;
+	};
+
+	pinctrl_usdhc3_gpio_sleep: usdhc3gpiogrpsleep {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO20__GPIO2_IO20								0x51e
+		>;
+	};
+
+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+	pinctrl_usdhc2: usdhc2grp {
+		fsl,pins = <
+			MX93_PAD_SD2_CLK__USDHC2_CLK								0x1506
+			MX93_PAD_SD2_CMD__USDHC2_CMD								0x40001306
+			MX93_PAD_SD2_DATA0__USDHC2_DATA0							0x40001306
+			MX93_PAD_SD2_DATA1__USDHC2_DATA1							0x40001306
+			MX93_PAD_SD2_DATA2__USDHC2_DATA2							0x40001306
+			MX93_PAD_SD2_DATA3__USDHC2_DATA3							0x40001306
+			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT						0x51e	
+		>;
+	};
+
+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+		fsl,pins = <
+			MX93_PAD_SD2_CLK__USDHC2_CLK								0x158e
+			MX93_PAD_SD2_CMD__USDHC2_CMD								0x4000138e
+			MX93_PAD_SD2_DATA0__USDHC2_DATA0							0x4000138e
+			MX93_PAD_SD2_DATA1__USDHC2_DATA1							0x4000138e
+			MX93_PAD_SD2_DATA2__USDHC2_DATA2							0x4000138e
+			MX93_PAD_SD2_DATA3__USDHC2_DATA3							0x4000138e
+			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT						0x51e
+		>;
+	};
+
+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+		fsl,pins = <
+			MX93_PAD_SD2_CLK__USDHC2_CLK								0x15fe
+			MX93_PAD_SD2_CMD__USDHC2_CMD								0x400013fe
+			MX93_PAD_SD2_DATA0__USDHC2_DATA0							0x400013fe
+			MX93_PAD_SD2_DATA1__USDHC2_DATA1							0x400013fe
+			MX93_PAD_SD2_DATA2__USDHC2_DATA2							0x400013fe
+			MX93_PAD_SD2_DATA3__USDHC2_DATA3							0x400013fe
+			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT						0x51e
+		>;
+	};
+
+	pinctrl_usdhc2_sleep: usdhc2grpsleep {
+		fsl,pins = <
+			MX93_PAD_SD2_CLK__GPIO3_IO01            					0x51e
+			MX93_PAD_SD2_CMD__GPIO3_IO02								0x51e
+			MX93_PAD_SD2_DATA0__GPIO3_IO03								0x51e
+			MX93_PAD_SD2_DATA1__GPIO3_IO04								0x51e
+			MX93_PAD_SD2_DATA2__GPIO3_IO05								0x51e
+			MX93_PAD_SD2_DATA3__GPIO3_IO06								0x51e
+			MX93_PAD_SD2_VSELECT__GPIO3_IO19							0x51e
+		>;
+	};
+	
+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+	pinctrl_usdhc3: usdhc3grp {
+		fsl,pins = <
+			MX93_PAD_SD3_CLK__USDHC3_CLK								0x1506
+			MX93_PAD_SD3_CMD__USDHC3_CMD								0x40001106
+			MX93_PAD_SD3_DATA0__USDHC3_DATA0							0x40001106
+			MX93_PAD_SD3_DATA1__USDHC3_DATA1							0x40001106
+			MX93_PAD_SD3_DATA2__USDHC3_DATA2							0x40001106
+			MX93_PAD_SD3_DATA3__USDHC3_DATA3							0x40001106
+		>;
+	};
+	
+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+		fsl,pins = <
+			MX93_PAD_SD3_CLK__USDHC3_CLK								0x158e
+			MX93_PAD_SD3_CMD__USDHC3_CMD								0x4000138e
+			MX93_PAD_SD3_DATA0__USDHC3_DATA0							0x4000138e
+			MX93_PAD_SD3_DATA1__USDHC3_DATA1							0x4000138e
+			MX93_PAD_SD3_DATA2__USDHC3_DATA2							0x4000138e
+			MX93_PAD_SD3_DATA3__USDHC3_DATA3							0x4000138e
+		>;
+	};
+
+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
+		fsl,pins = <
+			MX93_PAD_SD3_CLK__USDHC3_CLK								0x15fe
+			MX93_PAD_SD3_CMD__USDHC3_CMD								0x400013fe
+			MX93_PAD_SD3_DATA0__USDHC3_DATA0							0x400013fe
+			MX93_PAD_SD3_DATA1__USDHC3_DATA1							0x400013fe
+			MX93_PAD_SD3_DATA2__USDHC3_DATA2							0x400013fe
+			MX93_PAD_SD3_DATA3__USDHC3_DATA3							0x400013fe
+		>;
+	};	
+
+	pinctrl_usdhc3_sleep: usdhc3grpsleep {
+		fsl,pins = <
+			MX93_PAD_SD3_CLK__USDHC3_CLK								0x51e
+			MX93_PAD_SD3_CMD__USDHC3_CMD								0x51e
+			MX93_PAD_SD3_DATA0__USDHC3_DATA0							0x51e
+			MX93_PAD_SD3_DATA1__USDHC3_DATA1							0x51e
+			MX93_PAD_SD3_DATA2__USDHC3_DATA2							0x51e
+			MX93_PAD_SD3_DATA3__USDHC3_DATA3							0x51e
+		>;
+	};
+
+	pinctrl_tpm4: tmp4grp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO25__TPM4_CH3								0x19e
+		>;
+	};
+
+	pinctrl_tpm5: tmp5grp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO26__TPM5_CH3								0x19e
+		>;
+	};
+
+};
