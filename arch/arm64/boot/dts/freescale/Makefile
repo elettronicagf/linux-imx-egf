@@ -432,6 +432,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk-pmic-pf0900-rpmsg-lpv.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx93-nei000x0.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx93-ost000x0.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx93-ost001x0.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx93-ost000x1.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb.dtb \
 			  imx93-9x9-qsb-can1.dtb \
