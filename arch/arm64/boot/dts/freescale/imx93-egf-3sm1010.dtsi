@@ -426,10 +426,10 @@
 	};
 };
 
-// &lpm {
-// 	soc-supply = <&buck1>;
-// 	status = "okay";
-// };
+&lpm {
+	soc-supply = <&buck1>;
+ 	status = "okay";
+};
 
 
 &lpi2c1 {
