@@ -87,6 +87,7 @@
 		gpio = <&gpio2 17 GPIO_ACTIVE_HIGH>;
 		off-on-delay-us = <12000>;
 		enable-active-high;
+		regulator-always-on;
 	};
 
 	reg_usb1: regulator-usb1 {
