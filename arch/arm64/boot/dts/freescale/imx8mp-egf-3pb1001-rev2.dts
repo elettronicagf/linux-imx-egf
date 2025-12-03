@@ -142,27 +142,27 @@
 		pinctrl-names = "default";
 		user-led1 {
 			label = "green:user1";
-			gpios = <&gpio_exp_3v3_x16 1 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio_exp_3v3_x16 0 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "heartbeat";
 		};
 
 		user-led2 {
 			label = "green:user2";
-			gpios = <&gpio_exp_3v3_x16 2 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio_exp_3v3_x16 1 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "none";
 			default-state = "off";
 		};
 
 		user-led3 {
 			label = "green:user3";
-			gpios = <&gpio_exp_3v3_x16_u46 15 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio_exp_3v3_x16_u46 13 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "none";
 			default-state = "off";
 		};
 
 		user-led4 {
 			label = "green:user4";
-			gpios = <&gpio_exp_3v3_x16_u46 16 GPIO_ACTIVE_HIGH>;			
+			gpios = <&gpio_exp_3v3_x16_u46 14 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "none";
 			default-state = "off";
 		};
@@ -505,7 +505,16 @@
 
 &iomuxc {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_egf>, <&pinctrl_hog>;
+	pinctrl-0 = <&pinctrl_egf>, <&pinctrl_hog_rev2>;
+
+	pinctrl_hog_rev2: hoggrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x400001c2
+			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x400001c2
+			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x40000010
+			/* Remove HDMI CEC because it has been used for CAN  */
+		>;
+	};
 
 	pinctrl_egf: egfgrp {
 		fsl,pins = <
@@ -526,10 +535,7 @@
 
 			/* gpio Optoisolated Output (pulldown) */
 			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18			0x00000106
-			MX8MP_IOMUXC_SAI1_RXD2__GPIO4_IO04			0x00000106
-			MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05			0x00000106
 			MX8MP_IOMUXC_SAI1_MCLK__GPIO4_IO20			0x00000106
-
 		>;
 	};
 
