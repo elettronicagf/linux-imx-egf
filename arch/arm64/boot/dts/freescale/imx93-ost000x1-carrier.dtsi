@@ -172,8 +172,9 @@
 //=== EQOS
 //=============================================================================
 &eqos {
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_eqos>;
+	pinctrl-1 = <&pinctrl_eqos_sleep>;
 	phy-mode = "rgmii-id";
 	phy-handle = <&ethphy1>;
 	status = "okay";
@@ -185,7 +186,6 @@
 		clock-frequency = <5000000>;
 
 		ethphy1: ethernet-phy@7 {
-			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <7>;
 			reset-gpios = <&gpio3 26 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
@@ -198,8 +198,9 @@
 //=== FEC
 //=============================================================================
 &fec {
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_fec>;
+	pinctrl-1 = <&pinctrl_fec_sleep>;
 	phy-mode = "rgmii-id";
 	phy-handle = <&ethphy2>;
 	fsl,magic-packet;
@@ -211,7 +212,6 @@
 		clock-frequency = <5000000>;
 
 		ethphy2: ethernet-phy@5 {
-			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <5>;
 			reset-gpios = <&gpio3 27 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
@@ -265,7 +265,7 @@
 	eeprom_at24c32: eeprom@50 {
 		compatible = "atmel,24c32";
 		reg = <0x50>;
-		vcc-supply = <&reg_1v8_vdd>;
+		//vcc-supply = <&reg_1v8_vdd>;
 		pagesize = <32>;
 		num-addresses = <8>;
 	};
@@ -278,20 +278,19 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 	fsl,spi-num-chipselects = <1>;
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_lpspi1>;
+	pinctrl-1 = <&pinctrl_lpspi1>;
 	cs-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>;
 	status = "okay";
 	
 	eeprom_at25256B: eeprom@0 {
 		compatible = "atmel,at25";
-		spi-max-frequency = <5000000>;
-		spi-cpha;
-		spi-cpol;
+		spi-max-frequency = <1000000>;
 		size = <0x8000>;
 		pagesize = <64>;
 		reg = <0>;
-		address-width = <16>;
+		address-width = <16>;	
 	};
 };
 
@@ -302,16 +301,15 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 	fsl,spi-num-chipselects = <1>;
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_lpspi6>;
+	pinctrl-1 = <&pinctrl_lpspi6>;
 	cs-gpios = <&gpio2 00 GPIO_ACTIVE_LOW>;
 	status = "okay";
 	
 	eeprom_at25256B_2: eeprom@0 {
 		compatible = "atmel,at25";
-		spi-max-frequency = <5000000>;
-		spi-cpha;
-		spi-cpol;
+		spi-max-frequency = <1000000>;
 		size = <0x8000>;
 		pagesize = <64>;
 		reg = <0>;
@@ -508,18 +506,18 @@
 	pinctrl_lpspi1: lpspi1grp {
 		fsl,pins = <
 			MX93_PAD_SAI1_TXFS__GPIO1_IO11								0x3fe
-			MX93_PAD_SAI1_RXD0__LPSPI1_SOUT            					0x5fe
-			MX93_PAD_SAI1_TXC__LPSPI1_SIN              					0x5fe
-			MX93_PAD_SAI1_TXD0__LPSPI1_SCK             					0x5fe
+			MX93_PAD_SAI1_RXD0__LPSPI1_SOUT            					0x3fe
+			MX93_PAD_SAI1_TXC__LPSPI1_SIN              					0x3fe
+			MX93_PAD_SAI1_TXD0__LPSPI1_SCK             					0x3fe
 		>;
 	};
 
 	pinctrl_lpspi6: lpspi6grp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO00__GPIO2_IO00								0x3fe
-			MX93_PAD_GPIO_IO02__LPSPI6_SOUT            					0x5fe
-			MX93_PAD_GPIO_IO01__LPSPI6_SIN              				0x5fe
-			MX93_PAD_GPIO_IO03__LPSPI6_SCK             					0x5fe
+			MX93_PAD_GPIO_IO02__LPSPI6_SOUT            					0x3fe
+			MX93_PAD_GPIO_IO01__LPSPI6_SIN              				0x3fe
+			MX93_PAD_GPIO_IO03__LPSPI6_SCK             					0x3fe
 		>;
 	};
 
@@ -555,6 +553,26 @@
 		>;
 	};
 
+	pinctrl_eqos_sleep: eqosgrpsleep {
+		fsl,pins = <
+			MX93_PAD_ENET1_MDC__GPIO4_IO00								0x31e
+			MX93_PAD_ENET1_MDIO__GPIO4_IO01								0x31e
+			MX93_PAD_ENET1_RD0__GPIO4_IO10                          	0x31e
+			MX93_PAD_ENET1_RD1__GPIO4_IO11								0x31e
+			MX93_PAD_ENET1_RD2__GPIO4_IO12								0x31e
+			MX93_PAD_ENET1_RD3__GPIO4_IO13								0x31e
+			MX93_PAD_ENET1_RXC__GPIO4_IO09                          	0x31e
+			MX93_PAD_ENET1_RX_CTL__GPIO4_IO08							0x31e
+			MX93_PAD_ENET1_TD0__GPIO4_IO05                          	0x31e
+			MX93_PAD_ENET1_TD1__GPIO4_IO04                          	0x31e
+			MX93_PAD_ENET1_TD2__GPIO4_IO03								0x31e
+			MX93_PAD_ENET1_TD3__GPIO4_IO02								0x31e
+			MX93_PAD_ENET1_TXC__GPIO4_IO07                          	0x31e
+			MX93_PAD_ENET1_TX_CTL__GPIO4_IO06                       	0x31e
+			MX93_PAD_CCM_CLKO1__GPIO3_IO26								0x91e
+		>;
+	};
+
 	pinctrl_fec: fecgrp {
 		fsl,pins = <
 			MX93_PAD_ENET2_MDC__ENET1_MDC								0x57e
@@ -571,6 +589,26 @@
 			MX93_PAD_ENET2_TD3__ENET1_RGMII_TD3							0x57e
 			MX93_PAD_ENET2_TXC__ENET1_RGMII_TXC							0x58e
 			MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL					0x57e
+			MX93_PAD_CCM_CLKO2__GPIO3_IO27								0x91e
+		>;
+	};
+
+	pinctrl_fec_sleep: fecsleepgrp {
+		fsl,pins = <
+			MX93_PAD_ENET2_MDC__GPIO4_IO14								0x51e
+			MX93_PAD_ENET2_MDIO__GPIO4_IO15								0x51e
+			MX93_PAD_ENET2_RD0__GPIO4_IO24								0x51e
+			MX93_PAD_ENET2_RD1__GPIO4_IO25								0x51e
+			MX93_PAD_ENET2_RD2__GPIO4_IO26								0x51e
+			MX93_PAD_ENET2_RD3__GPIO4_IO27								0x51e
+			MX93_PAD_ENET2_RXC__GPIO4_IO23                  			0x51e
+			MX93_PAD_ENET2_RX_CTL__GPIO4_IO22							0x51e
+			MX93_PAD_ENET2_TD0__GPIO4_IO19								0x51e
+			MX93_PAD_ENET2_TD1__GPIO4_IO18								0x51e
+			MX93_PAD_ENET2_TD2__GPIO4_IO17								0x51e
+			MX93_PAD_ENET2_TD3__GPIO4_IO16								0x51e
+			MX93_PAD_ENET2_TXC__GPIO4_IO21                  			0x51e
+			MX93_PAD_ENET2_TX_CTL__GPIO4_IO20               			0x51e
 			MX93_PAD_CCM_CLKO2__GPIO3_IO27								0x91e
 		>;
 	};
