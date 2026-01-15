@@ -10,12 +10,32 @@
 #include "imx8mp.dtsi"
 
 / {
-	model = "EGF 3SM2008";
+	model = "EGF 3SM2008 LEGACY";
 	compatible = "fsl,imx8mp";
 
 	chosen {
 		stdout-path = &uart2;
 	};
+
+	/*Used mdio gpio driver because of signal inversion on 0700*/
+
+	mdio-gpio {
+		compatible = "virtual,mdio-gpio";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		gpios = <&gpio4 5 GPIO_ACTIVE_HIGH
+					&gpio4 4 GPIO_ACTIVE_HIGH>;
+
+		ethphy1: ethernet-phy@4 {
+			compatible = "ethernet-phy-ieee802.3-c22";
+			reg = <4>;
+			eee-broken-1000t;
+			reset-gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
+			reset-assert-us = <10000>;
+			reset-deassert-us = <80000>;
+		};
+	};
+
 
 };
 
@@ -81,14 +101,13 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		ethphy0: ethernet-phy@1 {
+		ethphy0: ethernet-phy@4 {
 			compatible = "ethernet-phy-ieee802.3-c22";
-			reg = <1>;
+			reg = <4>;
 			eee-broken-1000t;
-			reset-gpios = <&gpio4 1 GPIO_ACTIVE_HIGH>;
+			reset-gpios = <&gpio4 1 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
 			reset-deassert-us = <80000>;
-			realtek,clkout-disable;
 		};
 	};
 
@@ -159,12 +178,12 @@
 };
 
 &fec {
-	// pinctrl-names = "default";
-	// pinctrl-0 = <&pinctrl_fec>;
-	// phy-mode = "rgmii-id";
-	// phy-handle = <&ethphy1>;
-	// fsl,magic-packet;
-	status = "disabled";
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_fec>;
+	phy-mode = "rgmii-id";
+	phy-handle = <&ethphy1>;
+	fsl,magic-packet;
+	status = "okay";
 };
 
 
