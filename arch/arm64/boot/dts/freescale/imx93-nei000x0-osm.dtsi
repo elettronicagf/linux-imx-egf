@@ -279,7 +279,7 @@
 //=== WDOG3
 //=============================================================================
 &wdog3 {
-	status = "enabled";
+	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_wdogb>;
 	fsl,ext-reset-output;
 	status = "okay";
