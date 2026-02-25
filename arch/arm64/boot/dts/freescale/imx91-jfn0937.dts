@@ -1,0 +1,47 @@
+/*
+ * Copyright 2026 MASELETTRONICA
+ */
+
+/dts-v1/;
+
+#include <dt-bindings/usb/pd.h>
+#include "imx91.dtsi"
+#include "imx91-jfn0937-ca01-osm.dtsi"
+#include "imx91-ost000x1-carrier.dtsi"
+#include "imx91-ost000x1-gpio-labels.dtsi"
+
+
+&ele_fw2 {
+	memory-region = <&ele_reserved>;
+};
+
+/ {
+	model = "MAS i.MX91 JFN9037 board";
+	compatible = "fsl,imx91-jfn0937", "fsl,imx91";
+
+	chosen {
+		stdout-path = &lpuart1;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		linux,cma {
+			compatible = "shared-dma-pool";
+			reusable;
+			alloc-ranges = <0 0x80000000 0 0x40000000>;
+			size = <0 0x10000000>;
+			linux,cma-default;
+		};
+
+		ele_reserved: ele-reserved@a4120000 {
+			compatible = "shared-dma-pool";
+			reg = <0 0xa4120000 0 0x100000>;
+			no-map;
+		};
+	};
+
+};
+
