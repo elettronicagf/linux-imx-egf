@@ -10,8 +10,11 @@
 
 
 &lpm {
-	ld-mode-enabled;
 	soc-supply = <&buck1>;
+	status = "okay";
+};
+
+&tempsense0 {
 	status = "okay";
 };
 
