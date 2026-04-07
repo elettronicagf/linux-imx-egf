@@ -35,13 +35,29 @@
 
 };
 &i2c4 {
-    /* In Cell touch TODO */
+    jd9365tl@68 {
+        compatible = "jadard,jdcommon","jadard,jd9365tl";
+        pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ts>;
+        reg = <0x68>;
+        status = "okay";
+        interrupt-parent = <&gpio5>;
+        interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
+		jadard,irq-gpio = <&gpio5 4 GPIO_ACTIVE_LOW>;
+		jadard,rst-gpio = <&gpio3 25 GPIO_ACTIVE_LOW>;
+		//jadard,panel-max-points = <4>;								/* Number of simultaneous tracks (for multitouch) [10 if not specified] */
+		jadard,int-is-edge = <1>;
+		//jadard,stylus = <1>;
+		jadard,panel-sense-nums = <600 1024>;
+		jadard,panel-coords = <0 600 0 1024>;
+        VDDIO-supply = <&reg_ts_enable>;
+    };
 };
 
 &iomuxc {
 	pinctrl_ts: tsgrp {
 		fsl,pins = <
-            MX8MM_IOMUXC_SAI5_MCLK_GPIO3_IO25          0x00000116       /* TS NRESET */
+            MX8MM_IOMUXC_SAI5_MCLK_GPIO3_IO25          0x00000156       /* TS NRESET */
             MX8MM_IOMUXC_SPDIF_RX_GPIO5_IO4            0x00000116       /* TS INT    */
             MX8MM_IOMUXC_SPDIF_EXT_CLK_GPIO5_IO5       0x00000116       /* TS V EN   */
 		>;

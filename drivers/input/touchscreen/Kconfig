@@ -1425,3 +1425,4 @@ endif
 
 source "drivers/input/touchscreen/synaptics_dsx/Kconfig"
 source "drivers/input/touchscreen/goodix_touch/Kconfig"
+source "drivers/input/touchscreen/jadard_touch/Kconfig"
