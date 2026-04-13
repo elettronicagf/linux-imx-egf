@@ -9,7 +9,7 @@
 #include "imx93-nei000x0-osm.dtsi"
 #include "imx93-ost000x1-carrier.dtsi"
 #include "imx93-ost000x1-gpio-labels.dtsi"
-#include "imx93-ost000x1-lvds-panel.dtsi"
+//#include "imx93-ost000x1-lvds-panel.dtsi"
 
 &ele_fw2 {
 	memory-region = <&ele_reserved>;
