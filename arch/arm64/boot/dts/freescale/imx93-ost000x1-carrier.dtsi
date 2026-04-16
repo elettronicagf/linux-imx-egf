@@ -249,8 +249,6 @@
 	tmp102: sensor@48 {
 		compatible = "ti,tmp102";
 		reg = <0x48>;
-		interrupt-parent = <&gpio2>;
-		interrupts = <21 IRQ_TYPE_LEVEL_LOW>;
 		vcc-supply = <&reg_3v3>;
 		#thermal-sensor-cells = <0>;
 	};
