@@ -5,6 +5,7 @@
 
 
 #include <dt-bindings/leds/common.h>
+#include <dt-bindings/thermal/thermal.h>
 
 / {
 
@@ -245,13 +246,13 @@
 &lpi2c2 {
 	status = "okay";
 
-	sensor@48 {
+	tmp102: sensor@48 {
 		compatible = "ti,tmp102";
 		reg = <0x48>;
 		interrupt-parent = <&gpio2>;
 		interrupts = <21 IRQ_TYPE_LEVEL_LOW>;
 		vcc-supply = <&reg_3v3>;
-		#thermal-sensor-cells = <1>;
+		#thermal-sensor-cells = <0>;
 	};
 
 };
@@ -419,7 +420,31 @@
 	status = "okay";
 };
 
-
+//=============================================================================
+//=== THERMAL ZONES
+//=============================================================================
+&thermal_zones {
+	
+	carrier-thermal {
+		polling-delay-passive = <1000>;
+		polling-delay = <1000>;
+		
+		thermal-sensors = <&tmp102 0>;
+        
+		trips {
+			carrier_alert0: trip0 {
+				temperature = <60000>;
+				hysteresis = <5000>;
+				type = "passive";
+			};
+			carrier_crit: trip1 {
+				temperature = <100000>;
+				hysteresis = <5000>;
+				type = "critical";
+			};
+		};
+	};
+};
 
 
 //=============================================================================
