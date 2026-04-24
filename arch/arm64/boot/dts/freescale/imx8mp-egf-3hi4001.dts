@@ -1,0 +1,93 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * Copyright 2020 NXP
+ * Copyright 2024 Elettronica GF s.r.l. con Socio Unico
+ */
+
+/dts-v1/;
+
+#include "imx8mp-egf-3pb1001.dts"
+
+ / {
+	model = "EGF 3HI4001";
+ 
+ 	reg_dsi_supply: regulator-3v3-dsi{
+		compatible = "regulator-fixed";
+		regulator-name = "DSI-3V3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+	};
+	
+	reg_ctp_supply: regulator-3v3-ctp {
+		compatible = "regulator-fixed";
+		regulator-name = "VCC_3V3_CTP";
+		gpio = <&gpio_exp_3v3_x8 3 GPIO_ACTIVE_HIGH>;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		enable-active-high;
+		regulator-always-on;
+	};
+	
+ 	dsi0_backlight: backlight {
+		compatible = "pwm-backlight";
+		pwms = <&pwm2 0 100000 0>;
+		enable-gpios = <&gpio_exp_3v3_x16 9 GPIO_ACTIVE_HIGH>;
+		status = "okay";
+		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
+				     10 11 12 13 14 15 16 17 18 19
+				     20 21 22 23 24 25 26 27 28 29
+				     30 31 32 33 34 35 36 37 38 39
+				     40 41 42 43 44 45 46 47 48 49
+				     50 51 52 53 54 55 56 57 58 59
+				     60 61 62 63 64 65 66 67 68 69
+				     70 71 72 73 74 75 76 77 78 79
+				     80 81 82 83 84 85 86 87 88 89
+				     90 91 92 93 94 95 96 97 98 99
+				    100>;
+		default-brightness-level = <80>;
+    };
+ };
+
+&lcdif1 {
+	status = "okay";
+};
+
+&mipi_dsi {
+	status = "okay";
+	panel@0 {
+		compatible = "egf,blc1256";
+        reg = <0>;
+       	dsi-lanes = <4>;
+        pinctrl-names = "default";	
+		reset-gpio = <&gpio_exp_3v3_x16 8 GPIO_ACTIVE_HIGH>;
+		vdd-supply =<&reg_dsi_supply>;
+		vccio-supply =<&reg_dsi_supply>;
+		backlight = <&dsi0_backlight>;	
+		status = "okay";
+	};
+};
+
+
+
+&i2c4 {
+
+
+	jd9365tl@68 {
+        compatible = "jadard,jdcommon","jadard,jd9365tl";
+        pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ts>;
+        reg = <0x68>;
+        status = "okay";
+        interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
+		jadard,irq-gpio = <&gpio1 5 GPIO_ACTIVE_HIGH>;
+		jadard,rst-gpio = <&gpio_exp_3v3_x8 4 GPIO_ACTIVE_HIGH>;
+		//jadard,panel-max-points = <4>;								/* Number of simultaneous tracks (for multitouch) [10 if not specified] */
+		jadard,int-is-edge = <1>;
+		//jadard,stylus = <1>;
+		jadard,panel-sense-nums = <600 1024>;
+		jadard,panel-coords = <0 600 0 1024>;
+        VDDIO-supply = <&reg_ctp_supply>;
+    };
+
+
+};

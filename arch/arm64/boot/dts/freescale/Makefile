@@ -131,10 +131,12 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb imx8mp-evk-rm67191.dtb imx8mp-evk-it626
 			  imx8mp-egf-3pb1000.dtb \
 			  imx8mp-egf-3pb1001.dtb \
 			  imx8mp-egf-3pb1001-10inch-upg.dtb \
+			  imx8mp-egf-3hi4001.dtb \
 			  imx8mp-egf-3hi4005.dtb \
 			  imx8mp-egf-3hi4011.dtb \
 			  imx8mp-egf-3hi4021.dtb \
 			  imx8mp-egf-3pb1001-rev2.dtb \
+			  imx8mp-egf-3hi4001-rev2.dtb \
 			  imx8mp-egf-3hi4005-rev2.dtb \
 			  imx8mp-egf-3hi4011-rev2.dtb \
 			  imx8mp-egf-3hi4021-rev2.dtb \
