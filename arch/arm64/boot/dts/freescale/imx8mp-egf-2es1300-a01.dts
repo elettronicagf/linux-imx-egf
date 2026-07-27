@@ -101,6 +101,47 @@
 		col-scan-delay-us = <5000>;
 		linux,no-autorepeat;
 	};
+	
+	gpio_keys: gpio-keys {
+    	compatible = "gpio-keys";
+		key_emergency: key-emergency {
+			label = "EMERGENCY_CALL";
+			gpios = <&gpio4 4 GPIO_ACTIVE_LOW>;
+			linux,code = <BTN_8>;
+		};
+
+		key_power: key-power {
+			label = "POWER";
+			gpios = <&gpio5 12 GPIO_ACTIVE_LOW>;
+			linux,code = <BTN_9>;
+		};
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		red {
+			label = "LedRed";
+			gpios = <&io_expander_2 12 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+		};
+		green {
+			label = "LedGreen";
+			gpios = <&io_expander_2 13 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+		};
+		yellow {
+			label = "LedYellow";
+			gpios = <&io_expander_2 14 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+		};
+		blue {
+			label = "LedBlue";
+			gpios = <&io_expander_2 15 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+		};
+		
+	};
+
 
 	clk_xrm1280: fixed-clock {
 		compatible = "fixed-clock";
@@ -637,6 +678,7 @@
 			MX8MP_IOMUXC_SAI5_MCLK__GPIO3_IO25         0x00000106  // gpio reset# LTE module
 			MX8MP_IOMUXC_SAI1_TXD3__GPIO4_IO15         0x00000106  // gpio PRES_KEY_ISO_1V8 (pull down)
 			MX8MP_IOMUXC_SAI1_RXD2__GPIO4_IO04         0x000001C6  // gpio KEYB_EMRFLT_1V8 (pull up)
+			MX8MP_IOMUXC_ECSPI2_MISO__GPIO5_IO12	   0x000001C6  // gpio KEYB_PWR_1V8 (pull up)
 			MX8MP_IOMUXC_SAI1_TXD7__GPIO4_IO19         0x000001C6  // gpio M2_B_INT_1V8 (pull up)
 			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18         0x000001C6  // gpio KEY_INFLT_1V8 (pull up)
 			MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05         0x000001C6  // gpio IOEXP_nINT_1V8 (pull up)
@@ -736,7 +778,7 @@
 		fsl,pins = <
 			MX8MP_IOMUXC_ECSPI2_SCLK__ECSPI2_SCLK		0x82
 			MX8MP_IOMUXC_ECSPI2_MOSI__ECSPI2_MOSI		0x82
-			MX8MP_IOMUXC_ECSPI2_MISO__ECSPI2_MISO		0x82
+			/* MX8MP_IOMUXC_ECSPI2_MISO__ECSPI2_MISO		0x82   USED FOR POWER KEY*/
 		>;
 	};
 
