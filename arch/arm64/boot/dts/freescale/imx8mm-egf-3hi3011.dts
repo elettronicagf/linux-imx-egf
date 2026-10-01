@@ -1,0 +1,8 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * Copyright 2020 NXP
+ */
+
+ /dts-v1/;
+
+ #include "imx8mm-egf-3pb1002.dts"
