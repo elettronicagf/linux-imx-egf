@@ -31,26 +31,7 @@
 		alloc-ranges = <0 0x40000000 0 0x50000000>;
 		linux,cma-default;
 	}; 
-	
-	/delete-node/ gpu_reserved@100000000;
-	
-	gpu_reserved: gpu_reserved@50000000 {
-	no-map;
-	reg = <0x0 0x50000000 0 0x10000000>;
-	};
-	
 };
-
-&gpu {
-	reg = <0x0 0x38000000 0x0 0x8000>, <0x0 0x38008000 0x0 0x8000>,
-	<0x0 0x40000000 0x0 0x48000000>;
-	reg-names = "iobase_3d", "iobase_2d",
-		"phys_baseaddr";
-	memory-region=<&gpu_reserved>;
-	status = "okay";
-};
-
-
 
 &A53_0 {
 	cpu-supply = <&buck2_reg>;
