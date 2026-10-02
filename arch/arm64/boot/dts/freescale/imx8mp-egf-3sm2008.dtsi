@@ -8,6 +8,9 @@
 #include <dt-bindings/phy/phy-imx8-pcie.h>
 #include <dt-bindings/usb/pd.h>
 #include "imx8mp.dtsi"
+#include "imx8mp-nxp-display.dtsi"
+#include "imx8mp-nxp-capture.dtsi"
+
 
 / {
 	model = "EGF i.MX8MPlus 3SM2008";
@@ -16,7 +19,6 @@
 	chosen {
 		stdout-path = &uart2;
 	};
-
 
 	memory@40000000 {
 		device_type = "memory";
@@ -29,8 +31,6 @@
 		#clock-cells = <0>;
 		clock-frequency = <100000000>;
 	};
-
-
 
 	/*Used mdio gpio driver because of signal inversion on 0700*/
 
@@ -51,32 +51,27 @@
 		};
 	};
 
-
-};
-
-
-&resmem {
-
-	/delete-node/ linux,cma;
-	
-	
-	linux,cma {
-		compatible = "shared-dma-pool";
-		reusable;
-		size = <0 0x0c000000>;
-		alloc-ranges = <0 0x40000000 0 0x50000000>;
-		linux,cma-default;
-	}; 
-	
-	/delete-node/ gpu_reserved@100000000;
-	
-	gpu_reserved: gpu_reserved@50000000 {
-	no-map;
-	reg = <0x0 0x50000000 0 0x10000000>;
+	reserved-memory {
+		/delete-node/ linux,cma;
+		
+		
+		linux,cma {
+			compatible = "shared-dma-pool";
+			reusable;
+			size = <0 0x0c000000>;
+			alloc-ranges = <0 0x40000000 0 0x50000000>;
+			linux,cma-default;
+		}; 
+		
+		/delete-node/ gpu_reserved@100000000;
+		
+		gpu_reserved: gpu_reserved@50000000 {
+			no-map;
+			reg = <0x0 0x50000000 0 0x10000000>;
+		};
 	};
-	
-};
 
+};
 
 &A53_0 {
 	cpu-supply = <&buck2>;
@@ -678,21 +673,21 @@
 	status = "okay";
 };
 
-&gpu_3d {
+&gpu3d {
 	status = "okay";
 };
 
-&gpu_2d {
+&gpu2d {
 	status = "okay";
 };
 
-&ml_vipsi {
+&npu {
 	status = "okay";
 };
 
 &mix_gpu_ml {
 	/*compatible = "fsl,imx8mp-gpu", "fsl,imx8-gpu-ss";*/
-	cores = <&gpu_3d>, <&ml_vipsi>, <&gpu_2d>;
+	cores = <&gpu3d>, <&npu>, <&gpu2d>;
 	reg = <0x0 0x40000000 0x0 0x48000000>;
 	reg-names = "phys_baseaddr";
 	memory-region=<&gpu_reserved>;
