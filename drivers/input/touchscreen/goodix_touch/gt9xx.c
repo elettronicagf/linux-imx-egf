@@ -1176,8 +1176,7 @@ static ssize_t gtp_dofwupdate_store(struct device *dev,
 		goto exit;
 	}
 
-	strlcpy(update_file_name, buf, count);
-
+	strscpy(update_file_name, buf, sizeof(update_file_name));
 	ts->force_update = true;
 	retval = gup_update_proc(update_file_name);
 	if (retval == FAIL)
@@ -1441,8 +1440,10 @@ static int gtp_request_irq(struct goodix_ts_data *ts)
 		}
 	} else { /* use hrtimer */
 		dev_info(&ts->client->dev, "No hardware irq, use hrtimer\n");
-		hrtimer_init(&ts->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-		ts->timer.function = gtp_timer_handler;
+		hrtimer_setup(&ts->timer,
+					gtp_timer_handler,
+					CLOCK_MONOTONIC,
+					HRTIMER_MODE_REL);
 		hrtimer_start(&ts->timer,
 			      ktime_set(0, (GTP_POLL_TIME + 6) * 1000000),
 			      HRTIMER_MODE_REL);
@@ -2146,45 +2147,7 @@ static void gtp_resume(struct goodix_ts_data *ts)
 	gtp_work_control_enable(ts, true);
 }
 
-#if defined(CONFIG_FB)
-static void fb_notify_resume_work(struct work_struct *work)
-{
-	struct goodix_ts_data *ts =
-		container_of(work, struct goodix_ts_data, fb_notify_work);
-	dev_info(&ts->client->dev, "try resume in workqueue\n");
-	gtp_resume(ts);
-}
-
-/* frame buffer notifier block control the suspend/resume procedure */
-static int gtp_fb_notifier_callback(struct notifier_block *noti,
-				    unsigned long event, void *data)
-{
-	struct fb_event *ev_data = data;
-	struct goodix_ts_data *ts = container_of(noti,
-			struct goodix_ts_data, notifier);
-	int *blank;
-
-	if (ev_data && ev_data->data && event == FB_EVENT_BLANK && ts) {
-		blank = ev_data->data;
-		if (*blank == FB_BLANK_UNBLANK ||
-		    *blank == FB_BLANK_NORMAL) {
-			dev_dbg(&ts->client->dev, "ts_resume");
-			if (ts->pdata->resume_in_workqueue)
-				schedule_work(&ts->fb_notify_work);
-			else
-				gtp_resume(ts);
-		} else if (*blank == FB_BLANK_POWERDOWN) {
-			dev_dbg(&ts->client->dev, "ts_suspend");
-			if (ts->pdata->resume_in_workqueue)
-				flush_work(&ts->fb_notify_work);
-			gtp_suspend(ts);
-		}
-	}
-
-	return 0;
-}
-
-#elif defined(CONFIG_PM)
+#if defined(CONFIG_PM)
 static int gtp_pm_suspend(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
@@ -2242,29 +2205,19 @@ static void gtp_late_resume(struct early_suspend *h)
 
 static int gtp_register_powermanager(struct goodix_ts_data *ts)
 {
-	int ret;
-#if defined(CONFIG_FB)
-	INIT_WORK(&ts->fb_notify_work, fb_notify_resume_work);
-	ts->notifier.notifier_call = gtp_fb_notifier_callback;
-	ret = fb_register_client(&ts->notifier);
-	if (ret)
-		dev_err(&ts->client->dev,
-			"Unable to register fb_notifier: %d\n", ret);
-#elif defined(CONFIG_HAS_EARLYSUSPEND)
+#if defined(CONFIG_HAS_EARLYSUSPEND)
 	ts->early_suspend.level = EARLY_SUSPEND_LEVEL_BLANK_SCREEN + 1;
 	ts->early_suspend.suspend = goodix_ts_early_suspend;
 	ts->early_suspend.resume = goodix_ts_late_resume;
 	register_early_suspend(&ts->early_suspend);
 #endif
 
-	return ret;
+	return 0;
 }
 
 static int gtp_unregister_powermanager(struct goodix_ts_data *ts)
 {
-#if defined(CONFIG_FB)
-		fb_unregister_client(&ts->notifier);
-#elif defined(CONFIG_HAS_EARLYSUSPEND)
+#if defined(CONFIG_HAS_EARLYSUSPEND)
 		unregister_early_suspend(&ts->early_suspend);
 #endif
 
@@ -2433,7 +2386,7 @@ static struct i2c_driver goodix_ts_driver = {
 #ifdef CONFIG_OF
 		.of_match_table = gtp_match_table,
 #endif
-#if !defined(CONFIG_FB) && defined(CONFIG_PM)
+#if defined(CONFIG_PM)
 		.pm		  = &gtp_pm_ops,
 #endif
 	},
