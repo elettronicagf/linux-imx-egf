@@ -910,7 +910,7 @@ static umode_t ili210x_attributes_visible(struct kobject *kobj,
 	return attr->mode;
 }
 
-static const struct attribute_group   = {
+static const struct attribute_group ili210x_group = {
 	.attrs = ili210x_attrs,
 	.is_visible = ili210x_attributes_visible,
 };
