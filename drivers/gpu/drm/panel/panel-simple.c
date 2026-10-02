@@ -5592,6 +5592,38 @@ static const struct panel_desc_dsi adapter_0834 = {
 	.lanes = 4,
 };
 
+static const struct display_timing blc1242_default_timing = {
+	.pixelclock = { 40800000, 51200000, 51200000 },
+	.hactive = { 1024, 1024, 1024 },
+	.hfront_porch = { 45, 80, 160 },
+	.hback_porch = { 45, 80, 160 },
+	.hsync_len = { 1, 70, 140 },
+	.vactive = { 600, 600, 600 },
+	.vfront_porch = { 1, 6, 12 },
+	.vback_porch = { 23, 23, 23 },
+	.vsync_len = { 1, 10, 20 },
+	.flags = DISPLAY_FLAGS_HSYNC_HIGH | DISPLAY_FLAGS_VSYNC_HIGH |
+		 DISPLAY_FLAGS_DE_LOW | DISPLAY_FLAGS_PIXDATA_NEGEDGE |
+		 DISPLAY_FLAGS_SYNC_NEGEDGE,
+};
+
+static const struct panel_desc_dsi blc1242 = {
+	.desc = {
+		.timings = &blc1242_default_timing,
+		.num_timings = 1,
+		.bpc = 8,
+		.size = {
+			.width = 0,
+			.height = 0,
+		},
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+	},
+
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
 
 static const struct drm_display_mode auo_b080uan01_mode = {
 	.clock = 154500,
@@ -5823,6 +5855,9 @@ static const struct of_device_id dsi_of_match[] = {
 	}, {
 		.compatible = "egf,adapter_0834",
 		.data = &adapter_0834
+	}, {
+		.compatible = "egf,blc1242",
+		.data = &blc1242
 	}, {
 		/* sentinel */
 	}

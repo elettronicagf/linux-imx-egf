@@ -62,6 +62,7 @@ struct ili210x {
 	struct gpio_desc *reset_gpio;
 	struct touchscreen_properties prop;
 	const struct ili2xxx_chip *chip;
+	struct regulator *vddio;
 	u8 version_firmware[8];
 	u8 version_kernel[5];
 	u8 version_proto[2];
@@ -763,7 +764,11 @@ static void ili210x_hardware_reset(struct gpio_desc *reset_gpio)
 {
 	/* Reset the controller */
 	gpiod_set_value_cansleep(reset_gpio, 1);
-	usleep_range(12000, 15000);
+	msleep(10);
+	gpiod_set_value_cansleep(reset_gpio, 0);
+	msleep(10);
+	gpiod_set_value_cansleep(reset_gpio, 1);
+	msleep(10);
 	gpiod_set_value_cansleep(reset_gpio, 0);
 	msleep(300);
 }
@@ -905,7 +910,7 @@ static umode_t ili210x_attributes_visible(struct kobject *kobj,
 	return attr->mode;
 }
 
-static const struct attribute_group ili210x_group = {
+static const struct attribute_group   = {
 	.attrs = ili210x_attrs,
 	.is_visible = ili210x_attributes_visible,
 };
@@ -955,6 +960,18 @@ static int ili210x_i2c_probe(struct i2c_client *client)
 	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
 	if (IS_ERR(reset_gpio))
 		return PTR_ERR(reset_gpio);
+
+	priv->vddio = devm_regulator_get(dev, "VDDIO");
+	if (!IS_ERR(priv->vddio)) {
+		error = regulator_enable(priv->vddio);
+		if (error) {
+			dev_err(&client->dev,
+				"Failed to enable VDDIO regulator: %d\n",
+				error);
+			regulator_disable(priv->vddio);
+			return error;
+		}
+	}
 
 	if (reset_gpio) {
 		error = devm_add_action_or_reset(dev, ili210x_power_down,
