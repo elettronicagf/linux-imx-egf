@@ -1,0 +1,3 @@
+/dts-v1/;
+
+#include "imx8mp-egf-2lx100x.dtsi"
