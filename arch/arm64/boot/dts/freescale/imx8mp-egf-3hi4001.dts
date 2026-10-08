@@ -78,7 +78,6 @@
 		pinctrl-0 = <&pinctrl_ts>;
         reg = <0x68>;
         status = "okay";
-        interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
 		jadard,irq-gpio = <&gpio1 5 GPIO_ACTIVE_HIGH>;
 		jadard,rst-gpio = <&gpio_exp_3v3_x8 4 GPIO_ACTIVE_HIGH>;
 		//jadard,panel-max-points = <4>;								/* Number of simultaneous tracks (for multitouch) [10 if not specified] */
