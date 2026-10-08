@@ -10,6 +10,49 @@
 	status = "okay";
 };
 
+&lpi2c2 {
+	clock-frequency = <400000>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_lpi2c2>;
+	status = "okay";
+
+    // RTC carrier
+    rtc_pcf85263a: rtc@51 {
+        compatible = "nxp,pcf85263";
+        reg = <0x51>;
+    };
+
+    // EEPROM carrier
+    24c32@54 {
+        compatible = "atmel,24c32";
+        pinctrl-names = "default";
+        reg = <0x54>;
+        pagesize = <32>;
+    };
+    
+    // IO EXPANDER U46
+    gpio_exp_3v3_x8: gpio@21 {
+        compatible = "ti,tca6408";
+        reg = <0x21>;
+        gpio-controller;
+        #gpio-cells = <2>;
+    };
+    
+    // nau8822_1a: nau8822@1a {
+    //     compatible = "nuvoton,nau8822";
+    //     reg = <0x1a>;
+    //     #sound-dai-cells = <0>;
+    //     clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI3_MCLK1>;
+    //     clock-names = "mclk";
+    // };
+    
+    // temp sensor
+    tmp102@48 {
+        reg = <0x48>;
+        compatible = "ti,tmp102";
+    };
+};
+
 &lpi2c4 {
 	status = "okay";
 
@@ -32,13 +75,4 @@
 
 };
 
-&iomuxc {
-	pinctrl-names = "default";
 
-	pinctrl_ts: tsgrp {
-		fsl,pins = <
-            MX93_PAD_PDM_BIT_STREAM1__GPIO1_IO10          0x00000116       /* TS nINT */
-		>;
-	};
-	
-};
