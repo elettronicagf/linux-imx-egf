@@ -687,7 +687,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93w-evk.dtb \
 			  imx93w-evk-rpmsg.dtb
 
 dtb-$(CONFIG_ARCH_MXC) += imx93-egf-3pb1001.dtb \
-                          imx93-egf-3hi5005.dtb
+                          imx93-egf-3hi5005.dtb imx93-egf-3hi5011.dtb
 
 imx93w-evk-8mic-reve-dtbs := imx93w-evk.dtb imx93w-evk-8mic-reve.dtbo
 dtb-$(CONFIG_ARCH_MXC) += imx93w-evk-8mic-reve.dtb
