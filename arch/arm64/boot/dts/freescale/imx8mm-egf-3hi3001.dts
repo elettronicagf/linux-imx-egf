@@ -1,0 +1,49 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * Copyright 2020 NXP
+ */
+
+ /dts-v1/;
+
+ #include "imx8mm-egf-3pb1002.dts"
+ 
+ / {
+    model = "EGF 3HI3001";
+
+    reg_ts_enable: regulator-ts-ena  {
+        compatible = "regulator-fixed";
+        regulator-name = "regulator-ts-ena";	
+        gpio = <&gpio5 5 GPIO_ACTIVE_HIGH>;
+        enable-active-high;
+        regulator-always-on;
+    };
+ };
+
+ &mipi_dsi {
+	status = "okay";
+	panel@0 {
+		compatible = "egf,blc1256";
+        reg = <0>;
+       	dsi-lanes = <4>;
+        pinctrl-names = "default";
+		reset-gpio = <&gpio3 23 GPIO_ACTIVE_HIGH>;
+		vdd-supply =  <&reg_dsi_enable>;
+        vccio-supply =  <&reg_dsi_enable>;
+		backlight = <&dsi0_backlight>;		
+		status = "okay";
+	};
+
+};
+&i2c4 {
+    /* In Cell touch TODO */
+};
+
+&iomuxc {
+	pinctrl_ts: tsgrp {
+		fsl,pins = <
+            MX8MM_IOMUXC_SAI5_MCLK_GPIO3_IO25          0x00000116       /* TS NRESET */
+            MX8MM_IOMUXC_SPDIF_RX_GPIO5_IO4            0x00000116       /* TS INT    */
+            MX8MM_IOMUXC_SPDIF_EXT_CLK_GPIO5_IO5       0x00000116       /* TS V EN   */
+		>;
+	};
+};

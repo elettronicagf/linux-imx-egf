@@ -194,6 +194,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-egf-3pb1002.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-egf-3hi3011.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-egf-3hi3021.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mm-egf-3hi3005.dtb
+dtb-$(CONFIG_ARCH_MXC) += imx8mm-egf-3hi3001.dtb
 
 imx8mm-phyboard-polis-peb-av-10-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-av-10.dtbo
 imx8mm-phyboard-polis-peb-eval-01-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-eval-01.dtbo
