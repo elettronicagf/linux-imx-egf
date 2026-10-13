@@ -7,6 +7,7 @@
 
 #include <dt-bindings/phy/phy-imx8-pcie.h>
 #include <dt-bindings/usb/pd.h>
+#include <dt-bindings/leds/common.h>
 #include "imx8mp.dtsi"
 #include "imx8mp-nxp-display.dtsi"
 #include "imx8mp-nxp-capture.dtsi"
@@ -83,12 +84,41 @@
 		#size-cells = <0>;
 
 		ethphy0: ethernet-phy@1 {
-			compatible = "ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-id001c.c878";
 			reg = <1>;
 			eee-broken-1000t;
 			reset-gpios = <&gpio4 1 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
 			reset-deassert-us = <80000>;
+			leds {
+                #address-cells = <1>;
+                #size-cells = <0>;
+
+                led@0 {
+                        reg = <0>;
+                        color = <LED_COLOR_ID_GREEN>;
+                        function = LED_FUNCTION_LAN;
+                        function-enumerator = <0>;
+                        linux,default-trigger = "netdev";
+                };
+
+                led@1 {
+                        reg = <1>;
+                        color = <LED_COLOR_ID_GREEN>;
+                        function = LED_FUNCTION_LAN;
+                        function-enumerator = <1>;
+                        linux,default-trigger = "netdev";
+                };
+
+                led@2 {
+                        reg = <2>;
+                        color = <LED_COLOR_ID_AMBER>;
+                        function = LED_FUNCTION_LAN;
+                        function-enumerator = <2>;
+                        linux,default-trigger = "netdev";
+                };
+        	};
+
 		};
 	};
 
@@ -173,7 +203,7 @@
 		#size-cells = <0>;
 
 		ethphy1: ethernet-phy@2 {
-			compatible = "ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-id001c.c878";
 			reg = <2>;
 			eee-broken-1000t;
 			reset-gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
@@ -181,6 +211,34 @@
 			reset-deassert-us = <80000>;
 			realtek,aldps-enable;
 			realtek,clkout-disable;
+			leds {
+                #address-cells = <1>;
+                #size-cells = <0>;
+
+                led@0 {
+                        reg = <0>;
+                        color = <LED_COLOR_ID_GREEN>;
+                        function = LED_FUNCTION_LAN;
+                        function-enumerator = <0>;
+                        linux,default-trigger = "netdev";
+                };
+
+                led@1 {
+                        reg = <1>;
+                        color = <LED_COLOR_ID_GREEN>;
+                        function = LED_FUNCTION_LAN;
+                        function-enumerator = <1>;
+                        linux,default-trigger = "netdev";
+                };
+
+                led@2 {
+                        reg = <2>;
+                        color = <LED_COLOR_ID_AMBER>;
+                        function = LED_FUNCTION_LAN;
+                        function-enumerator = <2>;
+                        linux,default-trigger = "netdev";
+                };
+        	};
 		};
 	};
 };
