@@ -64,7 +64,9 @@ allOf:
         properties:
           compatible:
             contains:
-              const: ethernet-phy-id001c.c916
+              enum:
+                - ethernet-phy-id001c.c916
+                - ethernet-phy-id001c.c878
     then:
       properties:
         leds: false
