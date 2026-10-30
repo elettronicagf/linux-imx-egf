@@ -7,6 +7,7 @@
 
 #include <dt-bindings/phy/phy-imx8-pcie.h>
 #include <dt-bindings/usb/pd.h>
+#include <dt-bindings/leds/common.h>
 #include "imx8mm.dtsi"
 #include "imx8mm-nxp-display.dtsi"
 
@@ -64,20 +65,40 @@
 		#size-cells = <0>;
 
 		ethphy0: ethernet-phy@4 {
-			compatible = "ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-id001c.c878","ethernet-phy-id001c.c916"; // RTL8211F-VD, RTL8211F
 			reg = <4>;
+			eee-broken-1000t;
 			reset-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
 			reset-deassert-us = <80000>;
-			realtek,aldps-enable;
-			realtek,clkout-disable;
-			qca,disable-smarteee;
-			vddio-supply = <&vddio>;
+			leds {
+                #address-cells = <1>;
+                #size-cells = <0>;
 
-			vddio: vddio-regulator {
-				regulator-min-microvolt = <1800000>;
-				regulator-max-microvolt = <1800000>;
-			};
+                led@0 {
+                        reg = <0>;
+                        color = <LED_COLOR_ID_GREEN>;
+                        function = LED_FUNCTION_LAN;
+                        function-enumerator = <0>;
+                        linux,default-trigger = "netdev";
+                };
+
+                led@1 {
+                        reg = <1>;
+                        color = <LED_COLOR_ID_GREEN>;
+                        function = LED_FUNCTION_LAN;
+                        function-enumerator = <1>;
+                        linux,default-trigger = "netdev";
+                };
+
+                led@2 {
+                        reg = <2>;
+                        color = <LED_COLOR_ID_AMBER>;
+                        function = LED_FUNCTION_LAN;
+                        function-enumerator = <2>;
+                        linux,default-trigger = "netdev";
+                };
+        	};
 		};
 	};
 };
