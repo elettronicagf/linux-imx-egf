@@ -84,7 +84,7 @@
 		#size-cells = <0>;
 
 		ethphy0: ethernet-phy@1 {
-			compatible = "ethernet-phy-id001c.c878";
+			compatible = "ethernet-phy-id001c.c878","ethernet-phy-id001c.c916"; // RTL8211F-VD, RTL8211F
 			reg = <1>;
 			eee-broken-1000t;
 			reset-gpios = <&gpio4 1 GPIO_ACTIVE_LOW>;
@@ -203,7 +203,7 @@
 		#size-cells = <0>;
 
 		ethphy1: ethernet-phy@2 {
-			compatible = "ethernet-phy-id001c.c878";
+			compatible = "ethernet-phy-id001c.c878","ethernet-phy-id001c.c916"; // RTL8211F-VD, RTL8211F
 			reg = <2>;
 			eee-broken-1000t;
 			reset-gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
