@@ -154,10 +154,10 @@
 	status = "okay";
 
 	// EEPROM SoM
-	24c64@50 {
-		compatible = "at,24c64";
-		pinctrl-names = "default";
+	24c256@50 {
+		compatible = "fsl,24c256";
 		reg = <0x50>;
+		pagesize = <32>;
 	};
 
 	// Temp Sensor SoM
