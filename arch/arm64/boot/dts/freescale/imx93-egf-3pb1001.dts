@@ -57,48 +57,48 @@
 	pinctrl-0 = <&pinctrl_lpi2c2>;
 	status = "okay";
 
-    // RTC carrier
-    rtc_pcf85263a: rtc@51 {
-        compatible = "nxp,pcf85263";
-        reg = <0x51>;
-    };
+	// RTC carrier
+	rtc_pcf85263a: rtc@51 {
+		compatible = "nxp,pcf85263";
+		reg = <0x51>;
+	};
 
-    // EEPROM carrier
-    24c32@54 {
-        compatible = "atmel,24c32";
-        pinctrl-names = "default";
-        reg = <0x54>;
-        pagesize = <32>;
-    };
-    
-    // IO EXPANDER U46
-    gpio_exp_3v3_x8: gpio@21 {
-        compatible = "ti,tca6408";
-        reg = <0x21>;
-        gpio-controller;
-        #gpio-cells = <2>;
-    };
-    
-    nau8822_1a: nau8822@1a {
-        compatible = "nuvoton,nau8822";
-        reg = <0x1a>;
-        #sound-dai-cells = <0>;
-        clocks = <&clk IMX93_CLK_SAI3_GATE>;
-        clock-names = "mclk";
-    };
-    
-    // Temp Sensor Carrier
-    tmp102@48 {
-        reg = <0x48>;
-        compatible = "ti,tmp102";
-    };
+	// EEPROM carrier
+	24c32@54 {
+		compatible = "atmel,24c32";
+		pinctrl-names = "default";
+		reg = <0x54>;
+		pagesize = <32>;
+	};
+
+	// IO EXPANDER U46
+	gpio_exp_3v3_x8: gpio@21 {
+		compatible = "ti,tca6408";
+		reg = <0x21>;
+		gpio-controller;
+		#gpio-cells = <2>;
+	};
+
+	nau8822_1a: nau8822@1a {
+		compatible = "nuvoton,nau8822";
+		reg = <0x1a>;
+		#sound-dai-cells = <0>;
+		clocks = <&clk IMX93_CLK_SAI3_GATE>;
+		clock-names = "mclk";
+	};
+
+	// Temp Sensor Carrier
+	tmp102@48 {
+		reg = <0x48>;
+		compatible = "ti,tmp102";
+	};
 };
 
 &lpi2c4 {
 	status = "okay";
 
 	// IO EXPANDER U41
-    gpio_exp_1v8: gpio@21 {
+	gpio_exp_1v8: gpio@21 {
 		compatible = "nxp,pcal6416";
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -109,7 +109,7 @@
 	};
 
 	// IO EXPANDER U42
-    gpio_exp_3v3_x16: gpio@20 {
+	gpio_exp_3v3_x16: gpio@20 {
 		compatible = "nxp,pcal6416";
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -200,7 +200,7 @@
 
 
 &iomuxc {
-    pinctrl-names = "default";
+	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_egf>;
 
 	pinctrl_egf: egfgrp {
@@ -210,14 +210,14 @@
 		>;
 	};
 
-    pinctrl_flexcan1: flexcan1grp {
+	pinctrl_flexcan1: flexcan1grp {
 		fsl,pins = <
-            MX93_PAD_PDM_CLK__CAN1_TX               0x139e
-            MX93_PAD_PDM_BIT_STREAM0__CAN1_RX       0x139e
+			MX93_PAD_PDM_CLK__CAN1_TX               0x139e
+			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX       0x139e
 		>;
 	};
 
-    pinctrl_uart1: uart1grp {
+	pinctrl_uart1: uart1grp {
 		fsl,pins = <
 			MX93_PAD_UART1_RXD__LPUART1_RX	        0x31e
 			MX93_PAD_UART1_TXD__LPUART1_TX	        0x31e
@@ -226,7 +226,7 @@
 		>;
 	};
 
-    pinctrl_uart5: uart5grp {
+	pinctrl_uart5: uart5grp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO01__LPUART5_RX	        0x31e
 			MX93_PAD_GPIO_IO00__LPUART5_TX	        0x31e
@@ -250,7 +250,7 @@
 
 	pinctrl_usdhc2: usdhc2grp {
 		fsl,pins = <
-            MX93_PAD_SD2_CLK__USDHC2_CLK			0x1582
+			MX93_PAD_SD2_CLK__USDHC2_CLK			0x1582
 			MX93_PAD_SD2_CMD__USDHC2_CMD			0x40001382
 			MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x40001382
 			MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x40001382

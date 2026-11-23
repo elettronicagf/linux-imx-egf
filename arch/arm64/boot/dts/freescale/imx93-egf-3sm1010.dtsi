@@ -84,7 +84,6 @@
 		memory-region = <&ethosu_mem>;
 		power-domains = <&mlmix>;
 	};
-
 };
 
 
@@ -140,7 +139,7 @@
 
 &lpm {
 	soc-supply = <&buck1>;
- 	status = "okay";
+	status = "okay";
 };
 
 
@@ -178,8 +177,8 @@
 		interrupts = <28 IRQ_TYPE_LEVEL_LOW>;
 		status = "okay";
 	};
-	
-	io_expander_u21: gpio@20 {	
+
+	io_expander_u21: gpio@20 {
 		compatible = "nxp,pcal6416";
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -275,8 +274,6 @@
 	pinctrl-1 = <&pinctrl_lpi2c4>;
 	status = "okay";
 };
-
-
 
 &lpi2c8 {
 	#address-cells = <1>;
