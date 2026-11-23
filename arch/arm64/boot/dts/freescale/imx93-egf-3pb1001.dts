@@ -5,6 +5,10 @@
 / {
 	model = "EGF iMX93 3PB1001";
 
+	aliases {
+		rtc0 = &rtc_pcf85263a;
+	};
+
 	sound {
 		compatible = "simple-audio-card";
 		simple-audio-card,bitclock-master = <&codec_dai>;
