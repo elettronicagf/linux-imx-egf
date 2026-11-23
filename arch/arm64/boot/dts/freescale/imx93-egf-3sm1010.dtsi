@@ -172,11 +172,15 @@
 	};
 };
 
-&lpm {
-	soc-supply = <&buck1>;
-	status = "okay";
-};
-
+/* only one op-point defined for DDR in eeprom,
+ * fails with ""no ddr frequency scaling can be supported" error.
+ * Disabling it for the moment.
+ *
+ * &lpm {
+ * 	soc-supply = <&buck1>;
+ * 	status = "okay";
+ * };
+ */
 
 &lpi2c1 {
 	#address-cells = <1>;
